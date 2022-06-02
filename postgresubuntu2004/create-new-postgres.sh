@@ -5,4 +5,5 @@ cp -Rp /var/lib/postgresql-docker-version /data/postgresql-lib/
 cp -Rp /etc/postgresql-docker-version /data/postgresql-etc
 cp -Rp /etc/postgresql-common-docker-version /data/postgresql-common-etc
 cp -Rp /var/log/postgresql-docker-version /data/postgresql-log
+/etc/init.d/postgresql restart
 echo "Copied postgres files to shared directory"
