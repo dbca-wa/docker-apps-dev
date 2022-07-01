@@ -10,8 +10,7 @@ if [ $status -ne 0 ]; then
   exit $status
 fi
 echo "listen_addresses = '*'" >> /etc/postgresql/12/main/postgresql.conf
-echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
-echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
+
 mv /var/lib/postgresql /var/lib/postgresql-docker-version
 ln -s /data/postgresql-lib/ /var/lib/postgresql
 
@@ -27,6 +26,9 @@ chown root.postgres /data/postgresql-log
 chmod 775 /data/postgresql-log
 chmod 775 /data/postgresql-log
 chmod 755 /app/create-new-postgres.sh
+
+echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
+echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
 
 # Start the second process
 service postgresql start &
