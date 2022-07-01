@@ -26,6 +26,7 @@ ln -s /data/postgresql-log /var/log/postgresql
 chown root.postgres /data/postgresql-log
 chmod 775 /data/postgresql-log
 chmod 775 /data/postgresql-log
+chmod 755 /app/create-new-postgres.sh
 
 # Start the second process
 service postgresql start &
