@@ -11,6 +11,7 @@ if [ $status -ne 0 ]; then
 fi
 echo "listen_addresses = '*'" >> /etc/postgresql/12/main/postgresql.conf
 echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
+echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
 mv /var/lib/postgresql /var/lib/postgresql-docker-version
 ln -s /data/postgresql-lib/ /var/lib/postgresql
 
