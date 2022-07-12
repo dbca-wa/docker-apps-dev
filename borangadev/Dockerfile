@@ -12,6 +12,7 @@ RUN useradd -g 1000 -u 1000 docker -s /bin/bash
 RUN mkdir /home/docker
 RUN chown docker.docker /home/docker
 RUN cp /root/.bashrc /home/docker
+RUN cp /root/.profile /home/docker
 RUN echo "cd /data/" >> /root/.bashrc
 
 EXPOSE 8080
