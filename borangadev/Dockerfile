@@ -9,6 +9,9 @@ RUN openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj  "/C=AU/ST=W
 
 RUN groupadd -g 1000 docker
 RUN useradd -g 1000 -u 1000 docker -s /bin/bash
+RUN cp /root/.bashrc /home/docker
+RUN echo "cd /data/" >> /root/.bashrc
+
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
 CMD ["/startup.sh"]
