@@ -7,6 +7,8 @@ RUN apt-get install --no-install-recommends -y libpq-dev git ssh sudo
 RUN apt-get install --no-install-recommends -y screen
 RUN openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj  "/C=AU/ST=Western Australia/L=Perth/O=Development Environment/OU=IT Department/CN=example.com"  -keyout /etc/ssl/private/selfsignedssl.key -out /etc/ssl/private/selfsignedssl.crt
 
+RUN groupadd -g 1000 docker
+RUN useradd -g 1000 -u 1000 docker
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
 CMD ["/startup.sh"]
