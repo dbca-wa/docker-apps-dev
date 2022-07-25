@@ -11,3 +11,7 @@ Double-click on BasicAuthLevel, set the Value data to 2, and click Ok.
 Hopefully, now you know what is WebDAV and how you can map it in Windows 10.
 
 Related: Cyberduck is a free WebDAV client for Windows PC.
+
+#Webdav
+
+https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/credentials-prompt-access-webdav-fqdn-sites
