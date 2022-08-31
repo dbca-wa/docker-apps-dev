@@ -1,6 +1,6 @@
 # Prepare the base environment.
 FROM dbcawa/gokart:latest as builder_base_gokartsssdev
-
+USER root
 RUN apt-get update
 RUN apt-get install --no-install-recommends -y npm patch
 RUN apt-get install --no-install-recommends -y libpq-dev git ssh sudo 
@@ -15,6 +15,6 @@ RUN chown docker.docker /home/docker
 RUN cp /root/.bashrc /home/docker
 RUN cp /root/.profile /home/docker
 RUN echo "cd /data/" >> /home/docker/.bashrc
-USER root
+
 EXPOSE 8080
 CMD ["uwsgi", "--ini", "/app/uwsgi.ini"]
