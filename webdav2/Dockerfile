@@ -37,6 +37,8 @@ RUN mkdir /etc/webconfs/apache/
 RUN mkdir /var/web/
 RUN mkdir /etc/postfix-conf/
 RUN a2enmod ssl
+RUN a2enmod dav
+RUN a2enmod dav_fs
 RUN mkdir /var/www/webdav
 RUN chown www-data:www-data /var/www/webdav
 RUN mkdir -p /usr/local/apache/var/
