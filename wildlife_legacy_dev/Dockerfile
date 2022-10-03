@@ -1,5 +1,5 @@
 # Prepare the base environment.
-FROM dbcawa/wildlifelicensing:v2022.04.20.14.1000 as builder_base_wildlifelicensingdev
+FROM dbcawa/wildlifelicensing:v2.0.3 as builder_base_wildlifelicensingdev
 
 RUN apt-get update
 RUN apt-get install --no-install-recommends -y npm patch
