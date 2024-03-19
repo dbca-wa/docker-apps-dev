@@ -16,6 +16,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY boot.sh /
 COPY create-new-postgres.sh /app/
 COPY tools /app/
+RUN mkdir /app/tools
 RUN chmod 755 /app/tools/*.sh
 RUN chmod 755 /boot.sh
 RUN chmod 755 /app/create-new-postgres.sh
