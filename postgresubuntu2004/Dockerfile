@@ -17,7 +17,6 @@ COPY boot.sh /
 COPY create-new-postgres.sh /app/
 RUN mkdir /app/tools
 COPY tools/* /app/tools/
-RUN ls -la /app/tools
 RUN chmod 755 /app/tools/*.sh
 RUN chmod 755 /boot.sh
 RUN chmod 755 /app/create-new-postgres.sh
