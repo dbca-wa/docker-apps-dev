@@ -5,6 +5,13 @@
 trigger:
 - main
 
+- cron: "01 11 * 1-5"
+  displayName: Development Environment Rebuilds
+  branches:
+    include:
+    - main
+  always: true
+
 resources:
 - repo: self
 
