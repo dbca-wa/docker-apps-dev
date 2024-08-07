@@ -5,6 +5,7 @@
 trigger:
 - main
 
+schedules:
 - cron: "01 11 * 1-5"
   displayName: Development Environment Rebuilds
   branches:
