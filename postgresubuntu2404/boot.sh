@@ -9,7 +9,7 @@ if [ $status -ne 0 ]; then
   echo "Failed to start cron: $status"
   exit $status
 fi
-echo "listen_addresses = '*'" >> /etc/postgresql/12/main/postgresql.conf
+echo "listen_addresses = '*'" >> /etc/postgresql/16/main/postgresql.conf
 
 mv /var/lib/postgresql /var/lib/postgresql-docker-version
 ln -s /data/postgresql-lib/ /var/lib/postgresql
@@ -28,13 +28,13 @@ chmod 775 /data/postgresql-log
 chmod 755 /app/create-new-postgres.sh
 
 # Check if postgres rules exist
-if grep -q "172.17.0.1/8" /data/postgresql-etc/12/main/pg_hba.conf; then
+if grep -q "172.17.0.1/8" /data/postgresql-etc/16/main/pg_hba.conf; then
   echo "172.17.0.1/8 exists";
 else
   echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/16/main/pg_hba.conf
 fi
 
-if grep -q "10.17.0.1/8" /data/postgresql-etc/12/main/pg_hba.conf; then
+if grep -q "10.17.0.1/8" /data/postgresql-etc/16/main/pg_hba.conf; then
   echo "10.17.0.1/8 exists";
 else
   echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/16/main/pg_hba.conf
