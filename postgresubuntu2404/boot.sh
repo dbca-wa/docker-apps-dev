@@ -31,13 +31,13 @@ chmod 755 /app/create-new-postgres.sh
 if grep -q "172.17.0.1/8" /data/postgresql-etc/12/main/pg_hba.conf; then
   echo "172.17.0.1/8 exists";
 else
-  echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
+  echo "host    all             all             172.17.0.1/8            md5" >> /etc/postgresql/16/main/pg_hba.conf
 fi
 
 if grep -q "10.17.0.1/8" /data/postgresql-etc/12/main/pg_hba.conf; then
   echo "10.17.0.1/8 exists";
 else
-  echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/12/main/pg_hba.conf
+  echo "host    all             all             10.17.0.1/8            md5" >> /etc/postgresql/16/main/pg_hba.conf
 fi
 
 
