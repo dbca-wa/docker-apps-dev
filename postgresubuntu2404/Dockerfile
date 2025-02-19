@@ -11,7 +11,7 @@ RUN apt-get install --no-install-recommends -y curl ca-certificates
 # install direct from postgres
 RUN install -d /usr/share/postgresql-common/pgdg
 RUN curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail https://www.postgresql.org/media/keys/ACCC4CF8.asc
-RUN sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+RUN sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 RUN apt-get update
 
 RUN apt-get install --no-install-recommends -y  wget git postgresql postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
