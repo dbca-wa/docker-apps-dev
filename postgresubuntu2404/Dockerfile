@@ -7,6 +7,11 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
+# install direct from postgres
+RUN deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt bookworm-pgdg main
+RUN apt-get update
+
+
 RUN apt-get install --no-install-recommends -y  wget git postgresql postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
 RUN apt-get install --no-install-recommends -y  net-tools vim nano telnet ssh
 WORKDIR /app
