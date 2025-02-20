@@ -9,7 +9,7 @@ if [ $status -ne 0 ]; then
   echo "Failed to start cron: $status"
   exit $status
 fi
-echo "listen_addresses = '*'" >> /etc/postgresql/16/main/postgresql.conf
+echo "listen_addresses = '*'" >> /etc/postgresql/17/main/postgresql.conf
 
 mv /var/lib/postgresql /var/lib/postgresql-docker-version
 ln -s /data/postgresql-lib/ /var/lib/postgresql
