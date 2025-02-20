@@ -28,13 +28,13 @@ chmod 775 /data/postgresql-log
 chmod 755 /app/create-new-postgres.sh
 
 # Check if postgres rules exist
-if grep -q "172.17.0.1/8" /data/postgresql-etc/16/main/pg_hba.conf; then
+if grep -q "172.17.0.1/8" /data/postgresql-etc/17/main/pg_hba.conf; then
   echo "172.17.0.1/8 exists";
 else
   echo "host    all             all             172.17.0.1/8            scram-sha-256" >> /etc/postgresql/16/main/pg_hba.conf
 fi
 
-if grep -q "10.17.0.1/8" /data/postgresql-etc/16/main/pg_hba.conf; then
+if grep -q "10.17.0.1/8" /data/postgresql-etc/17/main/pg_hba.conf; then
   echo "10.17.0.1/8 exists";
 else
   echo "host    all             all             10.17.0.1/8            scram-sha-256" >> /etc/postgresql/16/main/pg_hba.conf
