@@ -47,8 +47,8 @@ stages:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/postgres16ubuntu2404/Dockerfile'
         tags: |
-              postgresubuntu2404_latest
-              postgresubuntu2404_$(tagDate)
+              postgresubuntu2404_16_latest
+              postgresubuntu2404_16_$(tagDate)
         containerRegistry: DockerGitHub
         repository: dbca-wa/docker-apps-dev
     - task: Docker@2
