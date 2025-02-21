@@ -32,7 +32,7 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
-      displayName: Build Postgres Image for Ubuntu 24.04
+      displayName: Build Postgres Image for Ubuntu 24.04 Postgres 17
       inputs:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/postgresubuntu2404/Dockerfile'
@@ -41,6 +41,16 @@ stages:
               postgresubuntu2404_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: dbca-wa/docker-apps-dev 
+    - task: Docker@2
+      displayName: Build Postgres Image for Ubuntu 24.04 Postgres 16
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/postgres16ubuntu2404/Dockerfile'
+        tags: |
+              postgresubuntu2404_16_latest
+              postgresubuntu2404_16_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: dbca-wa/docker-apps-dev
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Development Environment
       inputs:
