@@ -14,7 +14,7 @@ RUN curl -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc --fail http
 RUN sh -c 'echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt noble-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 RUN apt-get update
 
-RUN apt-get install --no-install-recommends -y  wget git postgresql postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
+RUN apt-get install --no-install-recommends -y  wget git postgresql-16 postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
 RUN apt-get install --no-install-recommends -y  net-tools vim nano telnet ssh
 WORKDIR /app
 COPY timezone /etc/timezone
