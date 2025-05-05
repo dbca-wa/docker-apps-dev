@@ -10,4 +10,6 @@ RUN apt-get upgrade -y
 
 RUN apt-get install --no-install-recommends -y  vim
 COPY permissions /etc/init.d/permissions
+COPY startup /etc/rc.local
+RUN chmod 755 /etc/rc.local
 RUN chmod 755 /etc/init.d/permissions
