@@ -7,7 +7,8 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y  vim net-tools telnet procps
+RUN apt-get install --no-install-recommends -y vim net-tools telnet procps
+RUN apt-get install --no-install-recommends -y postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
