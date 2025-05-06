@@ -7,7 +7,7 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y vim net-tools telnet procps
+RUN apt-get install --no-install-recommends -y vim net-tools telnet procps wget
 RUN apt-get install --no-install-recommends -y postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
 
 # Default Scripts
