@@ -8,7 +8,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install --no-install-recommends -y  vim
+RUN apt-get install --no-install-recommends -y  vim net-tools telnet
 COPY permissions /etc/init.d/permissions
 COPY startup /etc/rc.local
 RUN chmod 755 /etc/rc.local
