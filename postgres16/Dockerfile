@@ -7,13 +7,13 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y vim net-tools telnet procps wget
+RUN apt-get install --no-install-recommends -y vim net-tools telnet procps wget ca-certificates
 RUN apt-get install --no-install-recommends -y postgresql-16-postgis-3 postgresql-16-postgis-3-scripts
 
 # Default Scripts
-#RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
-#RUN chmod 755 /tmp/default_script_installer.sh
-#RUN /tmp/default_script_installer.sh
+RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
+RUN chmod 755 /tmp/default_script_installer.sh
+RUN /tmp/default_script_installer.sh
 
 # Set Terminal Prompt
 RUN echo 'if ! [ -n "${SUDO_USER}" -a -n "${SUDO_PS1}" ]; then' >> /etc/bash.bashrc
