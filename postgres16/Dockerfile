@@ -20,7 +20,3 @@ RUN echo 'if ! [ -n "${SUDO_USER}" -a -n "${SUDO_PS1}" ]; then' >> /etc/bash.bas
 RUN echo "export PS1='\[\e[0;31mdev:\e[0;32m \u@\h:~ \e[0;34m\W\$\e\[\e[0m\] '" >> /etc/bash.bashrc
 RUN echo "fi" >> /etc/bash.bashrc
 
-COPY set_hba.sh /usr/local/bin/
-RUN chmod 755 /usr/local/bin/set_hba.sh
-RUN echo "/usr/local/bin/set_hba.sh" >> /usr/local/bin/docker-entrypoint.sh
-
