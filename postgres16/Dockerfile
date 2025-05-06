@@ -7,9 +7,10 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-
 RUN apt-get install --no-install-recommends -y  vim net-tools telnet procps
-COPY permissions /etc/init.d/permissions
-COPY startup /etc/rc.local
-RUN chmod 755 /etc/rc.local
-RUN chmod 755 /etc/init.d/permissions
+
+# Default Scripts
+RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
+RUN chmod 755 /tmp/default_script_installer.sh
+RUN /tmp/default_script_installer.sh
+
