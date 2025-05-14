@@ -32,6 +32,16 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Build Wine Ubuntu 24.04
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/wineubuntu2024/Dockerfile'
+        tags: | 
+              wineubuntu2024_latest
+              wineubuntu2024_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: dbca-wa/docker-apps-dev     
+    - task: Docker@2
       displayName: Build Postgres Image for Postgres 16
       inputs:
         command: buildAndPush
