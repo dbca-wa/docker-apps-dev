@@ -32,6 +32,16 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Build Ubuntu 24.04 with texlive.
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu2404-texlive/Dockerfile'
+        tags: | 
+              wineubuntu2024_latest
+              wineubuntu2024_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: dbca-wa/docker-apps-dev             
+    - task: Docker@2
       displayName: Build Wine Ubuntu 24.04
       inputs:
         command: buildAndPush
