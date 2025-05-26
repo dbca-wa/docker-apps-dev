@@ -16,5 +16,6 @@ ENV TZ=Australia/Perth
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY startup.sh /
 RUN chmod 755 /startup.sh
+RUN apt-get clean
 EXPOSE 8080
 CMD ["/startup.sh"]
