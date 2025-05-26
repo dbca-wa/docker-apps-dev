@@ -37,8 +37,8 @@ stages:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/ubuntu2404-texlive/Dockerfile'
         tags: | 
-              wineubuntu2024_latest
-              wineubuntu2024_$(tagDate)              
+              ubuntu2404texlive_latest
+              ubuntu2404texlive_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: dbca-wa/docker-apps-dev             
     - task: Docker@2
