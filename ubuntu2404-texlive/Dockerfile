@@ -7,7 +7,7 @@ ENV SECRET_KEY="ThisisNotRealKey"
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y texlive-full
+#RUN apt-get install --no-install-recommends -y texlive-full
 RUN apt-get install --no-install-recommends -y texlive-bibtex-extra texlive-binaries texlive-extra-utils texlive-fonts-extra texlive-formats-extra texlive-humanities texlive-latex-base texlive-latex-extra texlive-latex-recommended texlive-luatex texlive-metapost texlive-pictures texlive-plain-generic texlive-pstricks texlive-publishers texlive-science texlive-xetex
 
 WORKDIR /app
