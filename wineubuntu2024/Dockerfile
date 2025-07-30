@@ -34,6 +34,7 @@ RUN wget https://www.python.org/ftp/python/3.12.9/python-3.12.9-amd64.zip -O /us
 RUN cd /usr/lib/pythonwindows/ ; unzip python-windows.zip
 #RUN wine /usr/lib/pythonwindows/python.exe -m pip install --upgrade pip
 RUN wine /usr/lib/pythonwindows/python.exe -m pip install pyinstaller
+RUN wine /usr/lib/pythonwindows/python.exe -m pip install requests
 
 WORKDIR /app
 COPY timezone /etc/timezone
