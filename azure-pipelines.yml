@@ -32,6 +32,16 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Build Ubuntu 24.04 Base Image (for local use).
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu2404_base/Dockerfile'
+        tags: | 
+              ubuntu2404_base_latest
+              ubuntu2404_base_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev        
+    - task: Docker@2
       displayName: Build Ubuntu 24.04 with texlive.
       inputs:
         command: buildAndPush
@@ -40,7 +50,7 @@ stages:
               ubuntu2404texlive_latest
               ubuntu2404texlive_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev             
+        repository: ghcr.io/dbca-wa/docker-apps-dev             
     - task: Docker@2
       displayName: Build Wine Ubuntu 24.04
       inputs:
@@ -50,7 +60,7 @@ stages:
               wineubuntu2024_latest
               wineubuntu2024_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev     
+        repository: ghcr.io/dbca-wa/docker-apps-dev     
     - task: Docker@2
       displayName: Build Postgres Image for Postgres 16
       inputs:
@@ -60,7 +70,7 @@ stages:
               postgres16_latest
               postgres16_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev 
+        repository: ghcr.io/dbca-wa/docker-apps-dev 
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 24.04 Postgres 17
       inputs:
@@ -70,7 +80,7 @@ stages:
               postgresubuntu2404_latest
               postgresubuntu2404_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev 
+        repository: ghcr.io/dbca-wa/docker-apps-dev 
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 24.04 Postgres 16
       inputs:
@@ -80,7 +90,7 @@ stages:
               postgresubuntu2404_16_latest
               postgresubuntu2404_16_$(tagDate)
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev
+        repository: ghcr.io/dbca-wa/docker-apps-dev
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Development Environment
       inputs:
@@ -90,7 +100,7 @@ stages:
               ubuntu2404_dev_latest
               ubuntu2404_dev_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev 
+        repository: ghcr.io/dbca-wa/docker-apps-dev 
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 20.04
       inputs:
@@ -100,4 +110,4 @@ stages:
               postgresubuntu2004_latest
               postgresubuntu2004_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: dbca-wa/docker-apps-dev 
+        repository: ghcr.io/dbca-wa/docker-apps-dev 
