@@ -172,6 +172,8 @@ RUN chmod +x /opt/*.sh && sed -i 's/\r$//' /opt/startup.sh
 RUN chown -R oim.oim /opt/ 
 RUN mkdir /geoserver_scripts
 COPY ./scripts/* /geoserver_scripts/
+COPY ./tomcat-index/web.xml /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT/web.xml
+COPY ./tomcat-index/redirect.jsp /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT/redirect.jsp
 
 USER oim
 ENTRYPOINT ["bash", "/opt/startup.sh"]
