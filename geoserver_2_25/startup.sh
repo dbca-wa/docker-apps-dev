@@ -5,6 +5,14 @@ if [ -z "${ADMIN_GEOSERVER_PASSWORD}" ]; then
   echo "Error: ADMIN_GEOSERVER_PASSWORD is not set or is empty."
   exit 1
 fi
+
+# Check if ADMIN_GEOSERVER_PASSWORD contains double quotes
+if [[ "${ADMIN_GEOSERVER_PASSWORD}" == *\"* ]]; then
+  echo "Error: ADMIN_GEOSERVER_PASSWORD contains double quotes, which is not allowed."
+  exit 1
+fi
+
+# update admin password
 sed -i.bak -E "s/(<user[^>]*name=\"admin\"[^>]*password=\")[^\"]*(\"[^>]*>)/\1plain:${ADMIN_GEOSERVER_PASSWORD}\2/" "/opt/geoserver_data/security/usergroup/default/users.xml"
 
 ## Skip demo data
