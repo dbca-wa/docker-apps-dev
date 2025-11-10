@@ -32,6 +32,16 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Ubuntu 24.04 Base Python
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2404_base_python/Dockerfile'
+        tags: | 
+              ubuntu_2404_base_python
+              ubuntu_2404_base_python_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev          
+    - task: Docker@2
       displayName: Ubuntu 24.04 Base Python + Node
       inputs:
         command: buildAndPush
