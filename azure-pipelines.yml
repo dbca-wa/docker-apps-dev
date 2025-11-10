@@ -32,6 +32,16 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Ubuntu 24.04 Base Python + Node
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2404_base_python_node/Dockerfile'
+        tags: | 
+              ubuntu_2404_base_python_node
+              ubuntu_2404_base_python_node_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev      
+    - task: Docker@2
       displayName: Build Geoserver 2.27 Image (for local use).
       inputs:
         command: buildAndPush
