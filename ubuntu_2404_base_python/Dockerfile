@@ -11,7 +11,7 @@ RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc bi
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
 RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano sudo
 RUN apt-get install --no-install-recommends -y bzip2 unzip
-RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config
+RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
 # Default Scripts
