@@ -73,7 +73,7 @@ RUN apt purge -y  \
 USER oim
 FROM tomcat as download
 
-ARG GS_VERSION=2.27.3
+ARG GS_VERSION=2.27.4
 ARG GS_BUILD=release
 ARG WAR_ZIP_URL=https://downloads.sourceforge.net/project/geoserver/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-war.zip
 ENV GEOSERVER_VERSION=$GS_VERSION
