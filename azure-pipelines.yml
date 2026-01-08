@@ -40,7 +40,10 @@ stages:
               geoserver2_27_latest
               geoserver2_27_base_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev      
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Ubuntu 25.10 Base Image (for local use).
       inputs:
@@ -51,6 +54,9 @@ stages:
               ubuntu2510_base_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev 
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Ubuntu 25.10 Base Python
       inputs:
@@ -61,6 +67,9 @@ stages:
               ubuntu_2510_base_python_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Ubuntu 24.04 Base Python + Node
       inputs:
@@ -71,6 +80,9 @@ stages:
               ubuntu_2510_base_python_node_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev            
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Ubuntu 24.04 Base Python
       inputs:
@@ -81,6 +93,9 @@ stages:
               ubuntu_2404_base_python_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev          
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Ubuntu 24.04 Base Python + Node
       inputs:
@@ -91,7 +106,9 @@ stages:
               ubuntu_2404_base_python_node_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev      
-      
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'      
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Base Image (for local use).
       inputs:
@@ -102,6 +119,9 @@ stages:
               ubuntu2404_base_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev        
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Ubuntu 24.04 with texlive.
       inputs:
@@ -112,6 +132,9 @@ stages:
               ubuntu2404texlive_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev             
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Wine Ubuntu 24.04
       inputs:
@@ -122,6 +145,9 @@ stages:
               wineubuntu2024_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev     
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Postgres Image for Postgres 16
       inputs:
@@ -132,6 +158,9 @@ stages:
               postgres16_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev 
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 24.04 Postgres 17
       inputs:
@@ -142,6 +171,9 @@ stages:
               postgresubuntu2404_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev 
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 24.04 Postgres 16
       inputs:
@@ -152,6 +184,9 @@ stages:
               postgresubuntu2404_16_$(tagDate)
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Development Environment
       inputs:
@@ -162,6 +197,9 @@ stages:
               ubuntu2404_dev_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev 
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'        
     - task: Docker@2
       displayName: Build Postgres Image for Ubuntu 20.04
       inputs:
