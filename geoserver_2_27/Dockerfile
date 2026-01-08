@@ -55,7 +55,8 @@ WORKDIR /opt/
 RUN chown -R oim.oim /opt
 USER oim
 
-RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+#RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+COPY binary/apache-tomcat-9.0.89.tar.gz ./
 RUN tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz 
 RUN rm apache-tomcat-${TOMCAT_VERSION}.tar.gz
 RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT 
