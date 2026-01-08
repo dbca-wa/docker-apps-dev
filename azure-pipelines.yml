@@ -31,16 +31,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-    - task: Docker@2
-      displayName: Build Geoserver 2.27 Image (for local use).
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/geoserver_2_27/Dockerfile'
-        tags: | 
-              geoserver2_27_latest
-              geoserver2_27_base_$(tagDate)              
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev      
+  
     - task: Docker@2
       displayName: Build Ubuntu 25.10 Base Image (for local use).
       inputs:
@@ -91,17 +82,16 @@ stages:
               ubuntu_2404_base_python_node_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev      
-
     - task: Docker@2
-      displayName: Build Geoserver 2.25 Image (for local use).
+      displayName: Build Geoserver 2.27 Image (for local use).
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/geoserver_2_25/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/geoserver_2_27/Dockerfile'
         tags: | 
-              geoserver2_25_latest
-              geoserver2_25_base_$(tagDate)              
+              geoserver2_27_latest
+              geoserver2_27_base_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev  
+        repository: ghcr.io/dbca-wa/docker-apps-dev            
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Base Image (for local use).
       inputs:
