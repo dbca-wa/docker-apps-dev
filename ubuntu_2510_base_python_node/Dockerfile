@@ -8,7 +8,7 @@ ENV NODE_MAJOR=20
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata rsyslog gunicorn virtualenv
+RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc g++ make binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata rsyslog gunicorn virtualenv
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
 RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano npm sudo
 RUN apt-get install --no-install-recommends -y bzip2 unzip
