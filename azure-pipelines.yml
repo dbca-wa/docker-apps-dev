@@ -32,8 +32,8 @@ stages:
       vmImage: ubuntu-latest
     steps:
      - task: Docker@2
-      displayName: Build Geoserver 2.27 Image (for local use).
-      inputs:
+       displayName: Build Geoserver 2.27 Image (for local use).
+       inputs:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/geoserver_2_27/Dockerfile'
         tags: | 
