@@ -55,14 +55,14 @@ WORKDIR /opt/
 RUN chown -R oim.oim /opt
 USER oim
 
-RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz \
-    && tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz \
-    && rm apache-tomcat-${TOMCAT_VERSION}.tar.gz \
-    && rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT \
-    && rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/docs \
-    && rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/examples \
-    && rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/host-manager \
-    && rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/manager
+RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+RUN tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz 
+RUN rm apache-tomcat-${TOMCAT_VERSION}.tar.gz
+RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT 
+RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/docs 
+RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/examples 
+RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/host-manager 
+RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/manager
 
 USER root
 # cleanup
