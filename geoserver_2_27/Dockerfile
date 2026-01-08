@@ -1,6 +1,6 @@
 FROM ubuntu:24.04 as tomcat
 
-ARG TOMCAT_VERSION=9.0.89
+ARG TOMCAT_VERSION=9.0.113
 ARG CORS_ENABLED=false
 ARG CORS_ALLOWED_ORIGINS=*
 ARG CORS_ALLOWED_METHODS=GET,POST,PUT,DELETE,HEAD,OPTIONS
@@ -56,7 +56,7 @@ RUN chown -R oim.oim /opt
 USER oim
 
 #RUN wget -q https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
-COPY binary/apache-tomcat-9.0.89.tar.gz ./
+COPY binary/apache-tomcat-${TOMCAT_VERSION}.tar.gz ./
 RUN tar xf apache-tomcat-${TOMCAT_VERSION}.tar.gz 
 RUN rm apache-tomcat-${TOMCAT_VERSION}.tar.gz
 RUN rm -rf /opt/apache-tomcat-${TOMCAT_VERSION}/webapps/ROOT 
