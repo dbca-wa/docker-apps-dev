@@ -10,9 +10,9 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc g++ make binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata rsyslog gunicorn virtualenv
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
-RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano npm sudo iostat 
+RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano npm sudo sysstat 
 RUN apt-get install --no-install-recommends -y bzip2 unzip
-RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 htop
+RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
 RUN apt-get install --no-install-recommends -y build-essential
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 RUN apt remove -y libnode-dev
