@@ -154,8 +154,8 @@ stages:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/postgres17ubuntu/Dockerfile'
         tags: | 
-              postgres17_latest
-              postgres17_$(tagDate)              
+              postgres17ubuntu_latest
+              postgres17ubuntu_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev 
     - script: |
