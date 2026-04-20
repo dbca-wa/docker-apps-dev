@@ -71,7 +71,7 @@ stages:
         docker system prune -af
       displayName: 'Cleanup Docker space'        
     - task: Docker@2
-      displayName: Ubuntu 24.04 Base Python + Node
+      displayName: Ubuntu 25.10 Base Python + Node
       inputs:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/ubuntu_2510_base_python_node/Dockerfile'
