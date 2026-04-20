@@ -3,7 +3,7 @@ MAINTAINER asi@dbca.wa.gov.au
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
-ENV NODE_MAJOR=20
+ENV NODE_MAJOR=24
 
 RUN apt-get clean
 RUN apt-get update
