@@ -31,6 +31,46 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+
+    - task: Docker@2
+      displayName: Build Ubuntu 26.04 Base Image (for local use).
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu2604_base/Dockerfile'
+        tags: | 
+              ubuntu2604_base_latest
+              ubuntu2604_base_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'       
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2604_base_python/Dockerfile'
+        tags: | 
+              ubuntu_2604_base_python
+              ubuntu_2604_base_python_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'  
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Node
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2604_base_python_node/Dockerfile'
+        tags: | 
+              ubuntu_2604_base_python_node
+              ubuntu_2604_base_python_node_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev            
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'    
     - task: Docker@2
       displayName: Build Geoserver 2.27 Image (for local use).
       inputs:
