@@ -33,3 +33,5 @@ RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
 RUN rm -rf /usr/bin/chisel
 RUN rm -rf /tmp/chisel
+RUN apt remove python3-jaraco.context
+RUN apt remove python3-wheel
