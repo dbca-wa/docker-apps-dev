@@ -19,12 +19,10 @@ RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
-RUN LATEST_TAG=$(curl -s https://github.com | jq -r '.tag_name') && \
-    CHISEL_VERSION=$(echo "$LATEST_TAG" | sed 's/^v//') && \
-    echo "Fetching Jpillora Chisel release: ${LATEST_TAG}" && \
-    curl -SL "https://github.com{LATEST_TAG}/chisel_${CHISEL_VERSION}_linux_amd64.gz" -o chisel.gz && \
-    gunzip chisel.gz && \
-    chmod +x chisel
+RUN LATEST_TAG=$(curl -s https://github.com | jq -r .tag_name) \
+    && CHISEL_VERSION=${LATEST_TAG#v} \
+    && curl -sSL "https://github.com{LATEST_TAG}/chisel_${CHISEL_VERSION}_linux_amd64.gz" | gunzip > /usr/local/bin/chisel \
+    && chmod +x /usr/local/bin/chisel
 
 RUN chisel cut --release ubuntu-26.04 --root /rootfs \
     base-files_base \
