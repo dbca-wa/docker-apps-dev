@@ -19,16 +19,12 @@ RUN apt-get install --no-install-recommends -y bzip2 unzip
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
-# 1. Fetch the latest version string from GitHub API
-CHISEL_VERSION=$(curl -s https://github.com | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-# 2. Download the matched archive for linux_amd64
-echo "Downloading Canonical Chisel ${CHISEL_VERSION}..."
-wget "https://github.com{CHISEL_VERSION}/chisel_${CHISEL_VERSION}_linux_amd64.tar.gz"
-# 3. Extract and move to PATH
-tar -zxvf "chisel_${CHISEL_VERSION}_linux_amd64.tar.gz"
-sudo mv chisel /usr/local/bin/
-# 4. Clean up archive
-rm "chisel_${CHISEL_VERSION}_linux_amd64.tar.gz"
+RUN LATEST_TAG=$(curl -s https://github.com | jq -r '.tag_name') && \
+    CHISEL_VERSION=$(echo "$LATEST_TAG" | sed 's/^v//') && \
+    echo "Fetching Jpillora Chisel release: ${LATEST_TAG}" && \
+    curl -SL "https://github.com{LATEST_TAG}/chisel_${CHISEL_VERSION}_linux_amd64.gz" -o chisel.gz && \
+    gunzip chisel.gz && \
+    chmod +x chisel
 
 RUN chisel cut --release ubuntu-26.04 --root /rootfs \
     base-files_base \
