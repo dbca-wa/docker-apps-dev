@@ -37,3 +37,4 @@ RUN rm -rf /tmp/chisel
 RUN apt remove python3-jaraco.context -y 
 RUN apt remove python3-wheel -y 
 RUN rm -f /usr/bin/pebble && rm -rf /var/lib/pebble
+RUN apt autoremove 
