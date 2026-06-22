@@ -5,10 +5,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
 
 RUN apt-get clean
-RUN add-apt-repository ppa:deadsnakes/ppa
-
 RUN apt-get update
+RUN apt install software-properties-common -y
+RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get upgrade -y
+
+
+
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata rsyslog gunicorn virtualenv 
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
 RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano sudo sysstat 
