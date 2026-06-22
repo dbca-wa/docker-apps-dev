@@ -23,7 +23,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN mkdir /tmp/chisel; LATEST_TAG=$(wget -qO- https://api.github.com/repos/canonical/chisel/releases/latest | grep -oP '"tag_name": "\K[^"]+') ; VERSION="${LATEST_TAG#v}" ; wget https://github.com/canonical/chisel/releases/download/${LATEST_TAG}/chisel_${LATEST_TAG}_linux_amd64.tar.gz -O /tmp/chisel/chisel.tar.gz ; cd /tmp/chisel/ ; tar -xzvf chisel.tar.gz ; chiseldir=$(ls -1 /tmp/chisel/ | grep chisel_linux_amd64) ; cp /tmp/chisel/$chiseldir/chisel /bin/chisel ; chmod 755 /bin/chisel
 
 
-RUN chisel cut --release ubuntu-26.04 --root /rootfs \
+RUN chisel cut --release ubuntu-26.04 --root / \
     base-files_base \
     base-files_release-info \
     libc6_libs
