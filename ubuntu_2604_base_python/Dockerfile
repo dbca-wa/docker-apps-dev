@@ -8,6 +8,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt install software-properties-common -y
 RUN add-apt-repository ppa:deadsnakes/ppa
+RUN apt-get update
 RUN apt-get upgrade -y
 
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-dev python3-pip tzdata postgresql-client
@@ -33,5 +34,5 @@ RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
 RUN rm -rf /usr/bin/chisel
 RUN rm -rf /tmp/chisel
-RUN apt remove python3-jaraco.context
-RUN apt remove python3-wheel
+RUN apt remove python3-jaraco.context -y 
+RUN apt remove python3-wheel -y 
