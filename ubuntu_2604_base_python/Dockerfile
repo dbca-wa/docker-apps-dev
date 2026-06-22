@@ -35,3 +35,5 @@ RUN chisel cut --release ubuntu-26.04 --root / \
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
+RUN rm -rf /usr/bin/chisel
+RUN rm -rf /tmp/chisel
