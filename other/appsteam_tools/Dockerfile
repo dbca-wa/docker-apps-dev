@@ -20,6 +20,6 @@ RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
 
 # Default Scripts
-RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/refs/heads/main/wagov_utils/bin/azcopy_install.sh-O /tmp/azcopy_install.sh
+RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/refs/heads/main/wagov_utils/bin/azcopy_install.sh -O /tmp/azcopy_install.sh
 RUN chmod 755 /tmp/azcopy_install.sh
 RUN /tmp/azcopy_install.sh
