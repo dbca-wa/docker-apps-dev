@@ -11,7 +11,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-dev tzdata postgresql-client
+RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-venv python3-dev tzdata postgresql-client
 # python3-setuptools rsyslog virtualenv python3-pip 
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
 # RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano sudo sysstat 
