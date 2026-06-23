@@ -1,4 +1,4 @@
-FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu2510_base_latest as builder_base_ubuntu2510
+FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest as builder_base_ubuntu2604
 MAINTAINER asi@dbca.wa.gov.au
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -18,3 +18,8 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
+
+# Default Scripts
+RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/refs/heads/main/wagov_utils/bin/azcopy_install.sh-O /tmp/azcopy_install.sh
+RUN chmod 755 /tmp/azcopy_install.sh
+RUN /tmp/azcopy_install.sh

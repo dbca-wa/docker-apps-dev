@@ -1,0 +1,60 @@
+# Docker
+# Build a Docker image
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+- main
+
+schedules:
+- cron: "01 12 * * 1-5"
+  displayName: Development Environment Rebuilds
+  branches:
+    include:
+    - main
+  always: true
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  tagDate: $[ format('{0:yyyy}.{0:MM}.{0:dd}.{0:HH}.{0:mm}{0:ss}', pipeline.startTime) ]
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  
+stages:
+- stage: Build
+  condition: and(succeeded(), eq(variables.isMain, 'true'))
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: Docker@2
+      displayName: Build BusyBox Base Image (for local use).
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/other/busybox_base/Dockerfile'
+        tags: | 
+              busybox_base_latest
+              busybox_base_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Busybox space'    
+    - task: Docker@2
+      displayName: Build AppsTeam Tools 26.04 Base Image (for local use).
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/other/appsteam_tools/Dockerfile'
+        tags: | 
+              appsteam_tools_base_latest
+              appsteam_tools_base_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'       
+    
