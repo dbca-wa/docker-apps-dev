@@ -32,9 +32,3 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
-RUN rm -rf /usr/bin/chisel
-RUN rm -rf /tmp/chisel
-RUN apt remove python3-jaraco.context -y 
-RUN apt remove python3-wheel -y 
-RUN rm -f /usr/bin/pebble && rm -rf /var/lib/pebble
-RUN apt autoremove -y
