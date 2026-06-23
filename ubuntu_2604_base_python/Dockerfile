@@ -13,6 +13,7 @@ RUN apt-get upgrade -y
 
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-venv python3-dev tzdata postgresql-client
 # python3-setuptools rsyslog virtualenv python3-pip 
+RUN apt-get install --no-install-recommends -y build-essential
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
 # RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano sudo sysstat 
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
@@ -32,3 +33,4 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
 RUN /tmp/default_script_installer.sh
+
