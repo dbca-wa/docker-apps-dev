@@ -74,7 +74,7 @@ stages:
       displayName: Build Ubuntu 25.10 Base Image (for local use).
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu2510_base/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu2510_base/Dockerfile'
         tags: | 
               ubuntu2510_base_latest
               ubuntu2510_base_$(tagDate)              
@@ -87,7 +87,7 @@ stages:
       displayName: Ubuntu 25.10 Base Python
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2510_base_python/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2510_base_python/Dockerfile'
         tags: | 
               ubuntu_2510_base_python
               ubuntu_2510_base_python_$(tagDate)              
@@ -100,7 +100,7 @@ stages:
       displayName: Ubuntu 25.10 Base Python + Node
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2510_base_python_node/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2510_base_python_node/Dockerfile'
         tags: | 
               ubuntu_2510_base_python_node
               ubuntu_2510_base_python_node_$(tagDate)              
@@ -113,7 +113,7 @@ stages:
       displayName: Ubuntu 24.04 Base Python
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2404_base_python/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2404_base_python/Dockerfile'
         tags: | 
               ubuntu_2404_base_python
               ubuntu_2404_base_python_$(tagDate)              
@@ -126,7 +126,7 @@ stages:
       displayName: Ubuntu 24.04 Base Python + Node
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu_2404_base_python_node/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2404_base_python_node/Dockerfile'
         tags: | 
               ubuntu_2404_base_python_node
               ubuntu_2404_base_python_node_$(tagDate)              
@@ -139,7 +139,7 @@ stages:
       displayName: Build Ubuntu 24.04 Base Image (for local use).
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu2404_base/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu2404_base/Dockerfile'
         tags: | 
               ubuntu2404_base_latest
               ubuntu2404_base_$(tagDate)              
@@ -152,7 +152,7 @@ stages:
       displayName: Build Ubuntu 24.04 with texlive.
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu2404-texlive/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu2404-texlive/Dockerfile'
         tags: | 
               ubuntu2404texlive_latest
               ubuntu2404texlive_$(tagDate)              
@@ -165,7 +165,7 @@ stages:
       displayName: Build Wine Ubuntu 24.04
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/wineubuntu2024/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/wineubuntu2024/Dockerfile'
         tags: | 
               wineubuntu2024_latest
               wineubuntu2024_$(tagDate)              
