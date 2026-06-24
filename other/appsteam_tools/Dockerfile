@@ -14,6 +14,11 @@ RUN apt-get install --no-install-recommends -y bzip2 unzip
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
+RUN groupadd -g 5000 oim 
+RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
+RUN mkdir /app 
+RUN chown -R oim:oim /app 
+
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
@@ -23,3 +28,5 @@ RUN /tmp/default_script_installer.sh
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/refs/heads/main/wagov_utils/bin/azcopy_install.sh -O /tmp/azcopy_install.sh
 RUN chmod 755 /tmp/azcopy_install.sh
 RUN /tmp/azcopy_install.sh
+
+USER oim
