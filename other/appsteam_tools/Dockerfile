@@ -29,4 +29,7 @@ RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/refs/heads/main/w
 RUN chmod 755 /tmp/azcopy_install.sh
 RUN /tmp/azcopy_install.sh
 
+USER root
+RUN apt purge -y linux-libc-dev
+
 USER oim
