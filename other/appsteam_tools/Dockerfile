@@ -24,8 +24,8 @@ RUN curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor 
 RUN chmod go+r /etc/apt/keyrings/microsoft.gpg
 
 # Add Azure CLI repository
-AZ_DIST=$(lsb_release -cs)
-RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ ${AZ_DIST} main" > /etc/apt/sources.list.d/azure-cli.list
+
+RUN AZ_DIST=$(lsb_release -cs) echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ ${AZ_DIST} main" > /etc/apt/sources.list.d/azure-cli.list
 RUN apt-get update
 RUN apt-get install -y azure-cli
 
