@@ -18,6 +18,16 @@ RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
 RUN mkdir /app 
 RUN chown -R oim:oim /app 
+# Add Microsoft signing key
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -sLS https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/keyrings/microsoft.gpg >/dev/null
+RUN chmod go+r /etc/apt/keyrings/microsoft.gpg
+
+# Add Azure CLI repository
+AZ_DIST=$(lsb_release -cs)
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/microsoft.gpg] https://packages.microsoft.com/repos/azure-cli/ ${AZ_DIST} main" > /etc/apt/sources.list.d/azure-cli.list
+RUN apt-get update
+RUN apt-get install -y azure-cli
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
