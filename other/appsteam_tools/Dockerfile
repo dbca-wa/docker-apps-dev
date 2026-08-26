@@ -1,8 +1,12 @@
-FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest as builder_base_ubuntu2604
-MAINTAINER asi@dbca.wa.gov.au
 
+ARG AZCOPY_AUTO_LOGIN_TYPE
+
+FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest as builder_base_ubuntu2604
+ARG AZCOPY_AUTO_LOGIN_TYPE
+MAINTAINER asi@dbca.wa.gov.au
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
+ENV AZCOPY_AUTO_LOGIN_TYPE=AZCLI
 
 RUN apt-get clean
 RUN apt-get update
