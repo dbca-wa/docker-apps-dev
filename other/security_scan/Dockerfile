@@ -6,7 +6,7 @@ ENV TZ=Australia/Perth
 RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
-RUN apt-get install --no-install-recommends -y curl wget git gcc binutils libproj-dev tzdata 
+RUN apt-get install --no-install-recommends -y curl wget git gcc binutils skopeo libproj-dev tzdata 
 RUN apt-get install --no-install-recommends -y bzip2 unzip python3 
 
 RUN groupadd -g 5000 oim 
