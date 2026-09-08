@@ -11,7 +11,9 @@ RUN apt-get install --no-install-recommends -y bzip2 unzip python3 ca-certificat
 
 RUN groupadd -g 5000 oim 
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
+
 RUN mkdir /app 
+COPY assets /app/assets
 RUN chown -R oim:oim /app 
 
 RUN wget -qO- https://get.anchore.io/syft | sh -s -- -b /usr/local/bin
