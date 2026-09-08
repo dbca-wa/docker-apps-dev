@@ -14,6 +14,8 @@ RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
 
 RUN mkdir /app 
 COPY assets /app/assets
+COPY scan_image.sh /app/
+RUN chmod 755 /app/scan_image.sh
 RUN chown -R oim:oim /app 
 
 RUN wget -qO- https://get.anchore.io/syft | sh -s -- -b /usr/local/bin
