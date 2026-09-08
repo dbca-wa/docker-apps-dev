@@ -7,7 +7,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install --no-install-recommends -y curl wget git gcc binutils skopeo libproj-dev tzdata 
-RUN apt-get install --no-install-recommends -y bzip2 unzip python3 ca-certificates
+RUN apt-get install --no-install-recommends -y bzip2 unzip python3 ca-certificates vim
 
 RUN groupadd -g 5000 oim 
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
