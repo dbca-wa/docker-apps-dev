@@ -1,4 +1,6 @@
 #!/bin/bash
+
+echo "Scanning Image $DOCKER_IMAGE"
 skopeo copy docker://$DOCKER_IMAGE docker-archive:/tmp/dockerimage-export.tar
 mkdir /tmp/dockerimage/
 
