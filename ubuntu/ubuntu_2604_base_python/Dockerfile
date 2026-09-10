@@ -28,8 +28,8 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 #     base-files_base \
 #     base-files_release-info \
 #     libc6_libs
-RUN apt-get purge -y python3-httplib2
-RUN pip install --break-system-packages --upgrade httplib2
+#RUN apt-get purge -y python3-httplib2
+#RUN pip install --break-system-packages --upgrade httplib2
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
