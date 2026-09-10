@@ -31,6 +31,9 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 #RUN apt-get purge -y python3-httplib2
 #RUN pip install --break-system-packages --upgrade httplib2
 
+# coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
+RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
+
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
 RUN chmod 755 /tmp/default_script_installer.sh
