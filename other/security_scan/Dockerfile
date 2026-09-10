@@ -20,5 +20,6 @@ RUN chown -R oim:oim /app
 
 RUN wget -qO- https://get.anchore.io/syft | sh -s -- -b /usr/local/bin
 RUN wget -qO- https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
-
+RUN curl -o /usr/local/bin/umoci -fsSL  https://github.com/opencontainers/umoci/releases/download/v0.6.0/umoci.linux.amd64
+RUN chmod 755 /usr/local/bin/umoci 
 USER oim
