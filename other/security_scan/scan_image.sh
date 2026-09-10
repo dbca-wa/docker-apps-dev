@@ -6,4 +6,6 @@ mkdir /tmp/scans
 umoci unpack --rootless --image /tmp/oci-image:latest /tmp/flattened-bundle
 syft dir:/tmp/flattened-bundle/rootfs/ --base-path /tmp/flattened-bundle/rootfs/ -o cyclonedx-json="/tmp/scans/sbom.json"
 grype /tmp/scans/sbom.json --sort-by=severity --output=template --template=/app/assets/tsv.tmpl --file=/tmp/scans/vulnerabilities.csv
+ssconvert /tmp/scans/vulnerabilities.csv /tmp/scans/vulnerabilities.xlsx
+
 echo "Scanning Image $DOCKER_IMAGE Completed"
