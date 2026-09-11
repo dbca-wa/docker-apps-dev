@@ -44,7 +44,8 @@ RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releas
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
 RUN mamba install -y -c conda-forge gdal=3.13 python=3.14 &&  mamba clean -afy
-
+ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
+ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
 
 
 # Default Scripts
