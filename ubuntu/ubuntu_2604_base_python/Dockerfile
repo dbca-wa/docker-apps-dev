@@ -11,7 +11,7 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-venv python3-dev tzdata postgresql-client
+RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev python3 python3-venv python3-dev tzdata postgresql-client
 # python3-setuptools rsyslog virtualenv python3-pip 
 RUN apt-get install --no-install-recommends -y build-essential
 RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
@@ -33,6 +33,12 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
+
+RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
+	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
+	 rm /tmp/miniforge.sh
+RUN mamba install -y -c conda-forge gdal=3.13 &&  mamba clean -afy
+RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
