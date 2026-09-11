@@ -46,7 +46,7 @@ ENV PATH=/usr/local/conda/bin:$PATH
 RUN mamba install -y -c conda-forge gdal=3.13 python=3.14 &&  mamba clean -afy
 ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
-
+ENV pip uninstall --yes conda-rattler-solver py-rattler
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
