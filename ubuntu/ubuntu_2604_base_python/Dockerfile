@@ -10,7 +10,7 @@ RUN mv /etc/apt/sources.list.d/ubuntu.sources.azure /etc/apt/sources.list.d/ubun
 RUN apt-get clean
 RUN apt-get update
 RUN apt install software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa
+# RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get upgrade -y
 
