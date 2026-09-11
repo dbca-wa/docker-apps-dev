@@ -37,8 +37,11 @@ RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
 	 rm /tmp/miniforge.sh
-RUN mamba install -y -c conda-forge gdal=3.13 &&  mamba clean -afy
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
+RUN source /etc/profile.d/conda_path.sh
+RUN mamba install -y -c conda-forge gdal=3.13 &&  mamba clean -afy
+
+
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
