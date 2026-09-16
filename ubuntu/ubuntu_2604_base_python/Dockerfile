@@ -14,19 +14,16 @@ RUN apt install software-properties-common -y
 RUN apt-get update
 RUN apt-get upgrade -y
 
-#RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev python3 python3-venv python3-dev tzdata postgresql-client
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client
-# python3-setuptools rsyslog virtualenv python3-pip 
 RUN apt-get install --no-install-recommends -y build-essential
-RUN apt-get install --no-install-recommends -y libpq-dev patch libreoffice
-# RUN apt-get install --no-install-recommends -y postgresql-client mtr htop vim nano sudo sysstat 
+RUN apt-get install --no-install-recommends -y libpq-dev patch 
+# libreoffice
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
-RUN ln -s /usr/bin/python3 /usr/bin/python 
+RUN apt-get install --no-install-recommends -y install flatpak
 
-# RUN LATEST_URL=$(curl -sS -o /dev/null -w "%{url_effective}" https://github.com) && CHISEL_VERSION=${LATEST_URL##*/} && curl -sSL "https://github.com{CHISEL_VERSION}/chisel_${CHISEL_VERSION}_linux_amd64.tar.gz" | tar -xz -C /usr/local/bin/ chisel
-# RUN mkdir /tmp/chisel; LATEST_TAG=$(wget -qO- https://api.github.com/repos/canonical/chisel/releases/latest | grep -oP '"tag_name": "\K[^"]+') ; VERSION="${LATEST_TAG#v}" ; wget https://github.com/canonical/chisel/releases/download/${LATEST_TAG}/chisel_${LATEST_TAG}_linux_amd64.tar.gz -O /tmp/chisel/chisel.tar.gz ; cd /tmp/chisel/ ; tar -xzvf chisel.tar.gz ; chiseldir=$(ls -1 /tmp/chisel/ | grep chisel_linux_amd64) ; cp /tmp/chisel/$chiseldir/chisel /bin/chisel ; chmod 755 /bin/chisel
-
+RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+RUN flatpak install flathub org.libreoffice.LibreOffice -y
 
 # RUN chisel cut --release ubuntu-26.04 --root / \
 #     base-files_base \
@@ -38,11 +35,13 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
 
+
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
 	 rm /tmp/miniforge.sh
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
+RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
 RUN mamba install -y -c conda-forge gdal=3.13 python=3.14 &&  mamba clean -afy
 ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
