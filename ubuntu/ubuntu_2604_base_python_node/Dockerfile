@@ -20,7 +20,9 @@ RUN apt-get upgrade -y
 
 # Install nodejs
 RUN update-ca-certificates
+RUN mamba install -y -c conda-forge nodejs=24 &&  mamba clean -afy
 
+RUN ln -s "$(which node)" "$(dirname "$(which node)")/nodejs"
 RUN mkdir -p /etc/apt/keyrings && \
     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
