@@ -21,9 +21,6 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
 
-RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-RUN flatpak install flathub org.libreoffice.LibreOffice -y
-
 # RUN chisel cut --release ubuntu-26.04 --root / \
 #     base-files_base \
 #     base-files_release-info \
