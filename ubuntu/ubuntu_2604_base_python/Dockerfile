@@ -19,7 +19,7 @@ RUN apt-get install --no-install-recommends -y build-essential
 RUN apt-get install --no-install-recommends -y libpq-dev patch 
 
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
-RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
+RUN apt-get install --no-install-recommends -y pkg-config sqlite3 
 RUN apt-get install --no-install-recommends -y ca-certificates
 
 RUN apt-get install --no-install-recommends -y \
@@ -67,7 +67,7 @@ RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releas
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
 RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
-RUN mamba install -y -c conda-forge gdal=3.13 python=3.14 &&  mamba clean -afy
+RUN mamba install -y -c conda-forge gdal=3.13 python=3.14 python-graphviz &&  mamba clean -afy
 ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/conda/bin/ogr2ogr
