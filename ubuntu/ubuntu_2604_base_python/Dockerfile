@@ -20,7 +20,7 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y pkg-config sqlite3 
-RUN apt-get install --no-install-recommends -y ca-certificates
+RUN apt-get install --no-install-recommends -y ca-certificates gpg
 
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
