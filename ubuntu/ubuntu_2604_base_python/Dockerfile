@@ -20,7 +20,7 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 # libreoffice
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
-RUN apt-get install --no-install-recommends -y install flatpak
+RUN apt-get install --no-install-recommends -y flatpak
 
 RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 RUN flatpak install flathub org.libreoffice.LibreOffice -y
