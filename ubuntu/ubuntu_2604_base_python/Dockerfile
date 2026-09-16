@@ -11,22 +11,51 @@ RUN apt-get clean
 RUN apt-get update
 # RUN apt install software-properties-common -y
 # RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt-get update
+# RUN apt-get update
 RUN apt-get upgrade -y
 
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client
 RUN apt-get install --no-install-recommends -y build-essential
 RUN apt-get install --no-install-recommends -y libpq-dev patch 
-# libreoffice
+
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y graphviz libgraphviz-dev pkg-config sqlite3 
+RUN apt-get install --no-install-recommends -y ca-certificates
 
-# RUN chisel cut --release ubuntu-26.04 --root / \
-#     base-files_base \
-#     base-files_release-info \
-#     libc6_libs
-#RUN apt-get purge -y python3-httplib2
-#RUN pip install --break-system-packages --upgrade httplib2
+RUN apt-get install --no-install-recommends -y \
+    libxinerama1 \
+    libxrender1 \
+    libglib2.0-0 \
+    libcairo2 \
+    libcups2 \
+    libdbus-1-3 \
+    libfontconfig1 \
+    libsm6 \
+    libice6 \
+    libxt6
+
+
+RUN apt-get install --no-install-recommends -y  \
+    libnss3 \
+    libnspr4 \
+    libxslt1.1
+
+RUN apt-get install --no-install-recommends -y  \
+    libx11-xcb1 \
+    libxcb-render0 \
+    libxcb-shm0
+
+# install libreoffice
+RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+    && tar -xvf libreoffice.tar.gz \
+    && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
+    && for file in *.deb; do \
+         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
+       done \
+    && mv opt/libreoffice* /opt/libreoffice \
+    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
+    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
+	
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
