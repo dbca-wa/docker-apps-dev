@@ -55,7 +55,7 @@ RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0
     && mv opt/libreoffice* /opt/libreoffice \
     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
-RUN rm /opt/libreoffice/program/libpython3.13.so
+# RUN rm /opt/libreoffice/program/libpython3.13.so
 # RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
