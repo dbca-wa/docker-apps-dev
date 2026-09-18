@@ -45,21 +45,6 @@ RUN apt-get install --no-install-recommends -y  \
     libxcb-render0 \
     libxcb-shm0
 
-# install libreoffice
-RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
-    && tar -xvf libreoffice.tar.gz \
-    && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
-    && for file in *.deb; do \
-         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
-       done \
-    && mv opt/libreoffice* /opt/libreoffice \
-    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
-    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
-RUN rm /opt/libreoffice/program/libpython3.13.so
-RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
-RUN rm /opt/libreoffice/program/python
-RUN ln -s /usr/local/conda/bin/python /opt/libreoffice/program/python
-
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
@@ -76,6 +61,25 @@ ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/conda/bin/ogr2ogr
 RUN pip uninstall --yes conda-rattler-solver py-rattler
+
+# install libreoffice
+RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+    && tar -xvf libreoffice.tar.gz \
+    && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
+    && for file in *.deb; do \
+         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
+       done \
+    && mv opt/libreoffice* /opt/libreoffice \
+    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
+    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
+RUN rm /opt/libreoffice/program/libpython3.13.so
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
+RUN rm /opt/libreoffice/program/python
+RUN ln -s /usr/local/conda/bin/python /opt/libreoffice/program/python
+
+RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
+
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
