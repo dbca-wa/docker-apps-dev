@@ -73,7 +73,10 @@ RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0
     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
 RUN rm /opt/libreoffice/program/libpython3.13.so
+RUN rm /opt/libreoffice/program/libpython3.13.so.1.0
 RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
+RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+
 RUN rm /opt/libreoffice/program/python
 RUN ln -s /usr/local/conda/bin/python /opt/libreoffice/program/python
 
