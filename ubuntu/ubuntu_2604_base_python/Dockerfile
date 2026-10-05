@@ -21,7 +21,7 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y pkg-config sqlite3 
 RUN apt-get install --no-install-recommends -y ca-certificates gpg
-RUN apt-get install -y git autoconf automake libtool pkg-config flex bison
+RUN apt-get install -y git autoconf automake libtool pkg-config flex bison cmake
 
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
@@ -73,20 +73,25 @@ RUN dot -V
 RUN pip install graphviz
 RUN pip install uno
 
-RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
-	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
-	 rm /tmp/miniforge.sh
-RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
-ENV PATH=/usr/local/conda/bin:$PATH
+# RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
+	 # bash /tmp/miniforge.sh -b -p /usr/local/conda && \
+	 # rm /tmp/miniforge.sh
+# RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
+# ENV PATH=/usr/local/conda/bin:$PATH
 # RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
 # RUN mamba install -y -c defaults python=3.14 python-graphviz 
-RUN mamba install -y -c conda-forge gdal=3.13 
-RUN mamba clean -afy
+# RUN mamba install -y -c conda-forge gdal=3.13 
+# RUN mamba clean -afy
 # RUN python -V
-ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
-ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
-ENV OGR2OGR=/usr/local/conda/bin/ogr2ogr
-RUN pip uninstall --yes conda-rattler-solver py-rattler
+# ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
+# ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
+# ENV OGR2OGR=/usr/local/conda/bin/ogr2ogr
+
+RUN export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig
+RUN gdal-config --version
+RUN gdalinfo --version
+
+# RUN pip uninstall --yes conda-rattler-solver py-rattler
 
 # install libreoffice
 RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
