@@ -55,7 +55,9 @@ RUN cd /tmp/Python-3.14.8; ./configure --enable-optimizations
 RUN cd /tmp/Python-3.14.8; make -j$(nproc)
 RUN cd /tmp/Python-3.14.8; make altinstall
 RUN ln -s /usr/local/bin/python3.14 /usr/bin/python
+RUN ln -s /usr/local/bin/pip3.14 /usr/bin/pip
 RUN python -V
+RUN pip -V
 
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
