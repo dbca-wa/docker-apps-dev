@@ -49,6 +49,13 @@ RUN apt-get install --no-install-recommends -y  \
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
 
+RUN wget -qO /tmp/Python-3.14.8.tgz https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tgz
+RUN cd /tmp/ ; tar xzf Python-3.14.8.tgz
+RUN cd /tmp/Python-3.14.8; ./configure --enable-optimizations
+RUN cd /tmp/Python-3.14.8; make -j$(nproc)
+RUN cd /tmp/Python-3.14.8; make altinstall
+RUN ln -s /usr/local/bin/python3.14 /usr/bin/python
+RUN python -V
 
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
@@ -56,10 +63,10 @@ RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releas
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
 RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
-RUN mamba install -y -c defaults python=3.14 
+# RUN mamba install -y -c defaults python=3.14 
 RUN mamba install -y -c conda-forge gdal=3.13 python-graphviz 
 RUN mamba clean -afy
-RUN python -V
+# RUN python -V
 ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/conda/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/conda/bin/ogr2ogr
