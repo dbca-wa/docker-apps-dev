@@ -70,6 +70,7 @@ RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./co
 RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make -j$(nproc)
 RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make install
 RUN dot -V
+RUN pip install graphviz
 
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
