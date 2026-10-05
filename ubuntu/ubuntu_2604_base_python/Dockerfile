@@ -51,7 +51,7 @@ RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu
 
 RUN wget -qO /tmp/Python-3.14.8.tgz https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tgz
 RUN cd /tmp/ ; tar xzf Python-3.14.8.tgz
-RUN cd /tmp/Python-3.14.8; ./configure --enable-optimizations
+RUN cd /tmp/Python-3.14.8; ./configure --enable-optimizations --enable-shared
 RUN cd /tmp/Python-3.14.8; make -j$(nproc)
 RUN cd /tmp/Python-3.14.8; make altinstall
 RUN ln -s /usr/local/bin/python3.14 /usr/bin/python
@@ -64,7 +64,7 @@ RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releas
 	 rm /tmp/miniforge.sh
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
-RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
+# RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
 # RUN mamba install -y -c defaults python=3.14 
 RUN mamba install -y -c conda-forge gdal=3.13 python-graphviz 
 RUN mamba clean -afy
@@ -88,8 +88,11 @@ RUN rm /opt/libreoffice/program/libpython3.13.so
 RUN rm /opt/libreoffice/program/libpython3.13.so.1.0
 # RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
 # RUN ln -sf /usr/lib/x86_64-linux-gnu/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
-RUN ln -sf /usr/local/conda/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
-RUN ln -sf /usr/local/conda/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+# RUN ln -sf /usr/local/conda/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
+# RUN ln -sf /usr/local/conda/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
+RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+
 
 RUN rm /opt/libreoffice/program/python
 RUN ln -s /usr/local/conda/bin/python /opt/libreoffice/program/python
