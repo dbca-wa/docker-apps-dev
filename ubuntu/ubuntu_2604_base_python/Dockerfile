@@ -91,6 +91,13 @@ RUN export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | g
 RUN gdal-config --version
 RUN gdalinfo --version
 
+RUN export GEOS_VERSION=$(wget -qO- https://libgeos.org/usage/download/ | grep -oP 'geos-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.bz2)' | head -n1) ; cd /tmp/; wget "https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2" ; tar -xjf "geos-${GEOS_VERSION}.tar.bz2"  ; cd "geos-${GEOS_VERSION}" ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ;  cmake --install . ; ldconfig
+RUN geos-config --version
+ 
+ENV GDAL_LIBRARY_PATH=/usr/local/lib/libgdal.so
+ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
+ENV OGR2OGR=/usr/local/bin/ogr2ogr
+
 # RUN pip uninstall --yes conda-rattler-solver py-rattler
 
 # install libreoffice
@@ -114,7 +121,7 @@ RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpytho
 
 
 RUN rm /opt/libreoffice/program/python
-RUN ln -s /usr/local/conda/bin/python /opt/libreoffice/program/python
+RUN ln -s /usr/bin/python /opt/libreoffice/program/python
 
 RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
