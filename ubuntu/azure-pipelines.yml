@@ -30,6 +30,7 @@ stages:
     displayName: Build
     pool:
       vmImage: ubuntu-latest
+    timeoutInMinutes: 360
     steps:  
     - task: Docker@2
       displayName: Build Ubuntu 26.04 Base Image (for local use).
