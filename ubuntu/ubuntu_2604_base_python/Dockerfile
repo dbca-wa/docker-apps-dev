@@ -21,6 +21,7 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 RUN apt-get install --no-install-recommends -y bzip2 unzip jq
 RUN apt-get install --no-install-recommends -y pkg-config sqlite3 
 RUN apt-get install --no-install-recommends -y ca-certificates gpg
+RUN apt-get install -y git autoconf automake libtool pkg-config flex bison
 
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
@@ -55,11 +56,21 @@ RUN cd /tmp/Python-3.14.8; ./configure --enable-optimizations --enable-shared
 RUN cd /tmp/Python-3.14.8; make -j$(nproc)
 RUN cd /tmp/Python-3.14.8; make altinstall
 RUN ln -s /usr/local/bin/python3.14 /usr/bin/python
+RUN ln -s /usr/local/bin/python3.14 /usr/bin/python3
 RUN ln -s /usr/local/bin/pip3.14 /usr/bin/pip
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
 RUN ldconfig
 RUN python -V
 RUN pip -V
+
+RUN VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/releases" | jq -r '.[0].tag_name')
+wget -qO /tmp/graphviz.tar.gz "https://gitlab.com/graphviz/graphviz/-/archive/${VERSION}/graphviz-${VERSION#*}/tar.gz"
+RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz
+RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh 
+RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./configure --prefix=/usr/local
+RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make -j$(nproc)
+RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make install
+RUN dot -V
 
 RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
 	 bash /tmp/miniforge.sh -b -p /usr/local/conda && \
@@ -67,8 +78,8 @@ RUN wget -qO /tmp/miniforge.sh  "https://github.com/conda-forge/miniforge/releas
 RUN echo 'export PATH="$PATH:/usr/local/conda/bin"' > /etc/profile.d/conda_path.sh
 ENV PATH=/usr/local/conda/bin:$PATH
 # RUN ln -s /usr/local/conda/bin/python /usr/bin/python 
-# RUN mamba install -y -c defaults python=3.14 
-RUN mamba install -y -c conda-forge gdal=3.13 python-graphviz 
+# RUN mamba install -y -c defaults python=3.14 python-graphviz 
+RUN mamba install -y -c conda-forge gdal=3.13 
 RUN mamba clean -afy
 # RUN python -V
 ENV GDAL_LIBRARY_PATH=/usr/local/conda/lib/libgdal.so
