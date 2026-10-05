@@ -63,7 +63,7 @@ RUN ldconfig
 RUN python -V
 RUN pip -V
 
-RUN VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/releases" | jq -r '.[0].tag_name') wget -qO /tmp/graphviz.tar.gz "https://gitlab.com/graphviz/graphviz/-/archive/${VERSION}/graphviz-${VERSION#*}/tar.gz"
+RUN VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/releases" | jq -r '.[0].tag_name') ; wget -O /tmp/graphviz.tar.gz "https://gitlab.com/graphviz/graphviz/-/archive/${VERSION}/graphviz-${VERSION#*}/tar.gz"
 RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz
 RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh 
 RUN cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./configure --prefix=/usr/local
