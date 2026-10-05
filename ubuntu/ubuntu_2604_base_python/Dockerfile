@@ -56,6 +56,8 @@ RUN cd /tmp/Python-3.14.8; make -j$(nproc)
 RUN cd /tmp/Python-3.14.8; make altinstall
 RUN ln -s /usr/local/bin/python3.14 /usr/bin/python
 RUN ln -s /usr/local/bin/pip3.14 /usr/bin/pip
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
+RUN ldconfig
 RUN python -V
 RUN pip -V
 
