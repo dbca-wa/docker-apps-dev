@@ -46,7 +46,7 @@ RUN apt-get install --no-install-recommends -y  \
     libxcb-render0 \
     libxcb-shm0
 
-RUN export VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ;  wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${VERSION}.tar.gz -O /tmp/libdeflate.tar.gz
+RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ; wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${DEFLATE_VERSION}.tar.gz -O /tmp/libdeflate.tar.gz
 RUN cd /tmp/ ; tar -xzf libdeflate.tar.gz 
 RUN cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install .
 RUN ldconfig
