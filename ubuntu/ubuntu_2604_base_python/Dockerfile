@@ -46,6 +46,11 @@ RUN apt-get install --no-install-recommends -y  \
     libxcb-render0 \
     libxcb-shm0
 
+RUN export VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ;  wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${VERSION}.tar.gz -O /tmp/libdeflate.tar.gz
+RUN cd /tmp/ ; tar -xzf libdeflate.tar.gz 
+RUN cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install .
+RUN ldconfig
+RUN ldconfig -p | grep libdeflate
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
@@ -119,13 +124,13 @@ RUN rm /opt/libreoffice/program/libpython3.13.so.1.0
 RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so	
 RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
 
-
 RUN rm /opt/libreoffice/program/python
 RUN ln -s /usr/bin/python /opt/libreoffice/program/python
 
 RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
+RUN /opt/libreoffice/program/python -m pip install unoserver
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
