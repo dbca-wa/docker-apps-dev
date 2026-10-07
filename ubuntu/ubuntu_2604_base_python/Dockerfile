@@ -46,11 +46,16 @@ RUN apt-get install --no-install-recommends -y  \
     libxcb-render0 \
     libxcb-shm0
 
+# libdeflate
 RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ; wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${DEFLATE_VERSION}.tar.gz -O /tmp/libdeflate.tar.gz
 RUN cd /tmp/ ; tar -xzf libdeflate.tar.gz 
 RUN cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install .
 RUN ldconfig
 RUN ldconfig -p | grep libdeflate
+
+# libtiff
+RUN cd /tmp/ ; export TIFF_VERSION=$(wget -qO- https://download.osgeo.org/libtiff/ | grep -oP 'tiff-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -V | tail -1) ; echo "Latest TIFF: $TIFF_VERSION" ; wget https://download.osgeo.org/libtiff/tiff-${TIFF_VERSION}.tar.gz ; tar -xzf tiff-${TIFF_VERSION}.tar.gz ; cd tiff-${TIFF_VERSION} ; ./configure --prefix=/usr/local ; make -j$(nproc) ; make install ; ldconfig  ; find /usr/local -name "libtiff.so*"
+
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
