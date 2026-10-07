@@ -89,7 +89,8 @@ RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
 RUN ldconfig ; python -V; pip -V
 
 RUN export VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/releases" | jq -r '.[0].tag_name') ; wget -O /tmp/graphviz.tar.gz "https://gitlab.com/graphviz/graphviz/-/archive/${VERSION}/graphviz-${VERSION#*}/tar.gz"
-RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh  ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./configure --prefix=/usr/local ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make -j$(nproc) ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make install
+#RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh  ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./configure --prefix=/usr/local ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make -j$(nproc) ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; make install
+RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh  ; ./configure --prefix=/usr/local ; make -j$(nproc) ;  make install
 RUN dot -V
 RUN pip install graphviz
 
