@@ -95,7 +95,7 @@ RUN cd /tmp; export GIFLIB_VERSION=$(wget -qO- https://sourceforge.net/projects/
 # freexl
 # RUN cd /tmp && export FREEXL_VERSION=$(wget -qO- https://www.gaia-gis.it/fossil/freexl/index | grep -oE 'freexl-[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' | sed -E 's/^freexl-//;s/\.tar\.gz$//' | sort -V | tail -n1) && wget "https://www.gaia-gis.it/gaia-sins/freexl-${FREEXL_VERSION}.tar.gz" && tar xzf "freexl-${FREEXL_VERSION}.tar.gz" && cd "freexl-${FREEXL_VERSION}" && ./configure --prefix=/usr/local && make -j"$(nproc)" && make install && ldconfig
 # libspatialite
-RUN cd /tmp && SPATIALITE_FILE=$(wget -qO- https://www.gaia-gis.it/fossil/libspatialite/index | grep -oE 'libspatialite-[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' | sort -V | tail -n1) && wget "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/${SPATIALITE_FILE}" && tar xzf "${SPATIALITE_FILE}" && cd "${SPATIALITE_FILE%.tar.gz}" && ./configure --prefix=/usr/local && make -j$(nproc) && make install && ldconfig
+# RUN cd /tmp && SPATIALITE_FILE=$(wget -qO- https://www.gaia-gis.it/fossil/libspatialite/index | grep -oE 'libspatialite-[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' | sort -V | tail -n1) && wget "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/${SPATIALITE_FILE}" && tar xzf "${SPATIALITE_FILE}" && cd "${SPATIALITE_FILE%.tar.gz}" && ./configure --prefix=/usr/local && make -j$(nproc) && make install && ldconfig
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
