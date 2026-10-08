@@ -12,8 +12,6 @@ RUN apt-get update
 RUN apt-get upgrade -y
 
 RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client build-essential run-one libpq-dev patch bzip2 unzip jq pkg-config ca-certificates gpg autoconf automake libtool pkg-config flex bison cmake libffi-dev
-RUN apt-get install -y 
-
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
     libxrender1 \
@@ -30,7 +28,9 @@ RUN apt-get install --no-install-recommends -y \
     libxslt1.1 \	
 	libx11-xcb1 \
     libxcb-render0 \
-    libxcb-shm0
+    libxcb-shm0 \
+	libtool 
+
   
 # libdeflate
 RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ; wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${DEFLATE_VERSION}.tar.gz -O /tmp/libdeflate.tar.gz ; cd /tmp/ ; tar -xzf libdeflate.tar.gz ; cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install . ; ldconfig ; ldconfig -p | grep libdeflate
