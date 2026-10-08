@@ -30,7 +30,9 @@ RUN apt-get install --no-install-recommends -y \
     libxcb-render0 \
     libxcb-shm0 \
 	libtool \
-	libltdl-dev
+	libltdl-dev \
+	libjbig0 \
+    libjbig-dev
 
   
 # libdeflate
