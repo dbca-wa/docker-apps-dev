@@ -32,7 +32,9 @@ RUN apt-get install --no-install-recommends -y \
 	libtool \
 	libltdl-dev \
 	libjbig0 \
-    libjbig-dev
+    libjbig-dev \ 
+	libc6-dev \
+	g++
 
   
 # libdeflate
@@ -41,7 +43,9 @@ RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/lib
 # libtiff
 RUN cd /tmp/ ; export TIFF_VERSION=$(wget -qO- https://download.osgeo.org/libtiff/ | grep -oP 'tiff-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -V | tail -1) ; echo "Latest TIFF: $TIFF_VERSION" ; wget https://download.osgeo.org/libtiff/tiff-${TIFF_VERSION}.tar.gz ; tar -xzf tiff-${TIFF_VERSION}.tar.gz ; cd tiff-${TIFF_VERSION} ; ./configure --prefix=/usr/local ; make -j$(nproc) ; make install ; ldconfig  ; find /usr/local -name "libtiff.so*"
 # libjepg
-RUN cd /tmp ; export JPEG_VERSION=$(wget -qO- https://api.github.com/repos/libjpeg-turbo/libjpeg-turbo/releases/latest | grep '"tag_name"' | head -1 | sed -E 's/.*"([0-9.]+)".*/\1/') ; echo "Latest JPEG Turbo: $JPEG_VERSION" ; wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/${JPEG_VERSION}.tar.gz -O libjpeg-turbo-${JPEG_VERSION}.tar.gz ; tar -xzf libjpeg-turbo-${JPEG_VERSION}.tar.gz ; cd libjpeg-turbo-${JPEG_VERSION}; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ;  make -j$(nproc) ; make install ; ldconfig ; find /usr/local -name "libjpeg*"
+# RUN cd /tmp ; export JPEG_VERSION=$(wget -qO- https://api.github.com/repos/libjpeg-turbo/libjpeg-turbo/releases/latest | grep '"tag_name"' | head -1 | sed -E 's/.*"([0-9.]+)".*/\1/') ; echo "Latest JPEG Turbo: $JPEG_VERSION" ; wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/${JPEG_VERSION}.tar.gz -O libjpeg-turbo-${JPEG_VERSION}.tar.gz ; tar -xzf libjpeg-turbo-${JPEG_VERSION}.tar.gz ; cd libjpeg-turbo-${JPEG_VERSION}; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ;  make -j$(nproc) ; make install ; ldconfig ; find /usr/local -name "libjpeg*"
+RUN cd /tmp ; export JPEG_VERSION=$(wget -qO- https://api.github.com/repos/libjpeg-turbo/libjpeg-turbo/releases/latest | grep '"tag_name"' | head -1 | sed -E 's/.*"([0-9.]+)".*/\1/') ; echo "Latest JPEG Turbo: $JPEG_VERSION" ; wget https://github.com/libjpeg-turbo/libjpeg-turbo/archive/refs/tags/${JPEG_VERSION}.tar.gz -O libjpeg-turbo-${JPEG_VERSION}.tar.gz ; tar -xzf libjpeg-turbo-${JPEG_VERSION}.tar.gz ; cd libjpeg-turbo-${JPEG_VERSION}; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_INSTALL_LIBDIR=lib -DWITH_JPEG8=ON ; cmake --build . --parallel "$(nproc)" ; cmake --install . ; ldconfig
+
 # libpng
 RUN cd /tmp ; export PNG_VERSION=$(wget -qO- https://sourceforge.net/projects/libpng/rss?path=/libpng16 | grep -oPm1 'libpng-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.xz)') ; echo "Latest libpng: $PNG_VERSION" ; wget https://downloads.sourceforge.net/project/libpng/libpng16/${PNG_VERSION}/libpng-${PNG_VERSION}.tar.xz ; tar -xf libpng-${PNG_VERSION}.tar.xz ; cd libpng-${PNG_VERSION} ; ./configure --prefix=/usr/local ; make -j$(nproc) ; make install ; ldconfig ; ldconfig -p | grep png
 # zlib
