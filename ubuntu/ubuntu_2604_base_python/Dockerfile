@@ -29,7 +29,8 @@ RUN apt-get install --no-install-recommends -y \
 	libx11-xcb1 \
     libxcb-render0 \
     libxcb-shm0 \
-	libtool 
+	libtool \
+	libltdl-dev
 
   
 # libdeflate
