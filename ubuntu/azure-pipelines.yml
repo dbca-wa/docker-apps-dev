@@ -33,13 +33,13 @@ stages:
     timeoutInMinutes: 360
     steps:  
     - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Node
+      displayName: Ubuntu 26.04 Base Python + Latex
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_latex/Dockerfile'
         tags: | 
-              ubuntu_2604_base_python_node
-              ubuntu_2604_base_python_node_$(tagDate)              
+              ubuntu_2604_base_python_latex
+              ubuntu_2604_base_python_latex_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev        
     - task: Docker@2
