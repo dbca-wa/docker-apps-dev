@@ -34,7 +34,8 @@ RUN apt-get install --no-install-recommends -y \
 	libjbig0 \
     libjbig-dev \ 
 	libc6-dev \
-	g++
+	g++ \ 
+	libbz2-dev
 
   
 # libdeflate
