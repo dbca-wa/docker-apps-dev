@@ -25,6 +25,8 @@ RUN cd /tmp/ ; wget https://nodejs.org/dist/v24.21.0/node-v24.21.0-linux-x64.tar
 RUN cd /tmp/ ; tar -xf node-v24.21.0-linux-x64.tar.xz --directory /usr/local --strip-components 1
 RUN node -v
 RUN npm -v
+RUN npm install -g npm@latest
+RUN npm -v
 # RUN ln -s "$(which node)" "$(dirname "$(which node)")/nodejs"
 
 
