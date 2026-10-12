@@ -54,7 +54,7 @@ RUN cd /tmp && \
 RUN /opt/texlive/bin/*/tlmgr install txfonts
 RUN /opt/texlive/bin/*/tlmgr install tabu
 RUN /opt/texlive/bin/*/tlmgr install hyphenat
-RUn /opt/texlive/bin/*/tlmgr install makecell      
+RUN /opt/texlive/bin/*/tlmgr install makecell      
 
 ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
 
