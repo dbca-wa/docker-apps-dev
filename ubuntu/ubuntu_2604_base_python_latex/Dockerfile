@@ -56,13 +56,15 @@ RUN /opt/texlive/bin/*/tlmgr install tabu
 RUN /opt/texlive/bin/*/tlmgr install hyphenat
 RUN /opt/texlive/bin/*/tlmgr install makecell     
 
+
+
+ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
+
 RUN TABU_STY="$(kpsewhich tabu.sty)" && \
     sed -i \
       's/\\edef\\tabu@naturalX@save[[:space:]]*{\\the\\tabu@naturalX}%/\\xdef\\tabu@naturalX@save{\\the\\tabu@naturalX}%/' \
       "$TABU_STY" && \
     grep -n "naturalX@save" "$TABU_STY"
-
-ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
 
 RUN which pdflatex && \
     pdflatex --version && \
