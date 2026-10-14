@@ -62,21 +62,14 @@ RUN /opt/texlive/bin/*/tlmgr install makecell
 ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
 
 # Make all saved values in \tabu@setcleanup global; fail the build if the patch does not apply
-RUN TABU_STY="$(kpsewhich tabu.sty)" && \
+RUN export TABU_STY="$(kpsewhich tabu.sty)" && \
     perl -0pi -e 's{(\\def\\tabu\@setcleanup\s*\{.*?\}% \\tabu\@setcleanup)}{ my $b=$1; $b =~ s/\\edef(\\(?:tabu\@alloc\@save|c\@taburow\@save|tabu\@naturalX\@save))/\\xdef$1/g; $b =~ s/\\let(\\[A-Za-z\@]+\@save)/\\global\\let$1/g; $b }se' "$TABU_STY" && \
     test "$(grep -c 'global.let.*@save\|xdef.*@save' "$TABU_STY")" -ge 16 && \
-    echo "tabu patched: $TABU_STY"
- 
-RUN sed -i \
-  's/\\edef\\tabu@evr@G/\\xdef\\tabu@evr@G/g' \
-  "$TABU_STY"
-RUN sed -i \
-  's/\\def\\tabu@evr@G/\\gdef\\tabu@evr@G/g' \
-  "$TABU_STY"
-RUN sed -i \
-  's/\\let\\tabu@evr@G/\\global\\let\\tabu@evr@G/g' \
-  "$TABU_STY"
-  
+    echo "tabu patched: $TABU_STY" && \
+    sed -i 's/\\edef\\tabu@evr@G/\\xdef\\tabu@evr@G/g' "$TABU_STY" && \
+    sed -i 's/\\def\\tabu@evr@G/\\gdef\\tabu@evr@G/g'  "$TABU_STY" && \
+    sed -i 's/\\let\\tabu@evr@G/\\global\\let\\tabu@evr@G/g' "$TABU_STY" 
+      
 # Fail the build if tabu cannot compile a table
 RUN mkdir /tmp/tabutest && cd /tmp/tabutest && \
     printf '%s\n' '\documentclass{scrartcl}' '\usepackage{tabu}' '\begin{document}' \
