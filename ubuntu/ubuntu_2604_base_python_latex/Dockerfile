@@ -82,9 +82,7 @@ RUN mkdir /tmp/tabutest && cd /tmp/tabutest && \
       '\begin{tabu} to \textwidth {X[l] X[r]}' 'a & b \\' '\end{tabu}' '\end{document}' > t.tex && \
     pdflatex -halt-on-error t.tex && cd / && rm -rf /tmp/tabutest
 
-RUN cd /tmp/tabutest
-rm -f t.aux t.log t.pdf
-pdflatex -halt-on-error t.tex
+# RUN cd /tmp/tabutest && rm -f t.aux t.log t.pdf && pdflatex -halt-on-error t.tex
 
 RUN which pdflatex && \
     pdflatex --version && \
