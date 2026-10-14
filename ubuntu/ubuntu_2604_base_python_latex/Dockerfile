@@ -60,11 +60,17 @@ RUN /opt/texlive/bin/*/tlmgr install makecell
 
 ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
 
+# Make all saved values in \tabu@setcleanup global; fail the build if the patch does not apply
 RUN TABU_STY="$(kpsewhich tabu.sty)" && \
-    sed -i \
-      's/\\edef\\tabu@naturalX@save[[:space:]]*{\\the\\tabu@naturalX}%/\\xdef\\tabu@naturalX@save{\\the\\tabu@naturalX}%/' \
-      "$TABU_STY" && \
-    grep -n "naturalX@save" "$TABU_STY"
+    perl -0pi -e 's{(\\def\\tabu\@setcleanup\s*\{.*?\}% \\tabu\@setcleanup)}{ my $b=$1; $b =~ s/\\edef(\\(?:tabu\@alloc\@save|c\@taburow\@save|tabu\@naturalX\@save))/\\xdef$1/g; $b =~ s/\\let(\\[A-Za-z\@]+\@save)/\\global\\let$1/g; $b }se' "$TABU_STY" && \
+    test "$(grep -c 'global.let.*@save\|xdef.*@save' "$TABU_STY")" -ge 16 && \
+    echo "tabu patched: $TABU_STY"
+ 
+# Fail the build if tabu cannot compile a table
+RUN mkdir /tmp/tabutest && cd /tmp/tabutest && \
+    printf '%s\n' '\documentclass{scrartcl}' '\usepackage{tabu}' '\begin{document}' \
+      '\begin{tabu} to \textwidth {X[l] X[r]}' 'a & b \\' '\end{tabu}' '\end{document}' > t.tex && \
+    pdflatex -halt-on-error t.tex && cd / && rm -rf /tmp/tabutest
 
 RUN which pdflatex && \
     pdflatex --version && \
