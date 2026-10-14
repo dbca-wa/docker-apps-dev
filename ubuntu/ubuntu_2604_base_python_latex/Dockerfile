@@ -52,10 +52,12 @@ RUN cd /tmp && \
         /opt/texlive/bin/*/tlmgr install latexmk && \
         rm -rf /tmp/install-tl*
         
-RUN /opt/texlive/bin/*/tlmgr install txfonts
-RUN /opt/texlive/bin/*/tlmgr install tabu
-RUN /opt/texlive/bin/*/tlmgr install hyphenat
-RUN /opt/texlive/bin/*/tlmgr install makecell     
+RUN /opt/texlive/bin/*/tlmgr install txfonts && \
+    /opt/texlive/bin/*/tlmgr install tabu && \
+    /opt/texlive/bin/*/tlmgr install hyphenat && \
+    /opt/texlive/bin/*/tlmgr install makecell && \
+    /opt/texlive/bin/*/tlmgr install helvetic 
+RUN mktexlsr && updmap-sys --syncwithtrees && updmap-sys
 
 
 
