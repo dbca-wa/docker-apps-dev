@@ -68,7 +68,8 @@ RUN export TABU_STY="$(kpsewhich tabu.sty)" && \
     echo "tabu patched: $TABU_STY" && \
     sed -i 's/\\edef\\tabu@evr@G/\\xdef\\tabu@evr@G/g' "$TABU_STY" && \
     sed -i 's/\\def\\tabu@evr@G/\\gdef\\tabu@evr@G/g'  "$TABU_STY" && \
-    sed -i 's/\\let\\tabu@evr@G/\\global\\let\\tabu@evr@G/g' "$TABU_STY" 
+    sed -i 's/\\let\\tabu@evr@G/\\global\\let\\tabu@evr@G/g' "$TABU_STY" && \
+    sed -i 's/\\edef\\tabu@clarstrut/\\xdef\\tabu@clarstrut/' "$TABU_STY"
       
 # Fail the build if tabu cannot compile a table
 RUN mkdir /tmp/tabutest && cd /tmp/tabutest && \
