@@ -57,11 +57,11 @@ RUN /opt/texlive/bin/*/tlmgr install txfonts && \
     /opt/texlive/bin/*/tlmgr install hyphenat && \
     /opt/texlive/bin/*/tlmgr install makecell && \
     /opt/texlive/bin/*/tlmgr install helvetic 
-RUN mktexlsr && updmap-sys --syncwithtrees && updmap-sys
 
 
 
 ENV PATH="/opt/texlive/bin/x86_64-linux:${PATH}"
+RUN mktexlsr && updmap-sys --syncwithtrees && updmap-sys
 
 # Make all saved values in \tabu@setcleanup global; fail the build if the patch does not apply
 RUN export TABU_STY="$(kpsewhich tabu.sty)" && \
