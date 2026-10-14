@@ -38,6 +38,7 @@ RUN apt-get install --no-install-recommends -y libffi-dev libyaml-dev
 RUN cd /tmp && \
     wget -q https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz && \
     tar -xzf install-tl-unx.tar.gz && \
+    rm install-tl-unx.tar.gz && \
     cd install-tl-* && \
     printf '%s\n' \
       'selected_scheme scheme-small' \
