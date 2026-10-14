@@ -102,15 +102,15 @@ RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz ; 
 RUN dot -V
 RUN pip install graphviz
 
-RUN export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig ; gdal-config --version ; gdalinfo --version
-RUN export GEOS_VERSION=$(wget -qO- https://libgeos.org/usage/download/ | grep -oP 'geos-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.bz2)' | head -n1) ; cd /tmp/; wget "https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2" ; tar -xjf "geos-${GEOS_VERSION}.tar.bz2"  ; cd "geos-${GEOS_VERSION}" ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ;  cmake --install . ; ldconfig ; geos-config --version
+RUN cd /tmp/ && export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig ; gdal-config --version ; gdalinfo --version
+RUN cd /tmp/ && export GEOS_VERSION=$(wget -qO- https://libgeos.org/usage/download/ | grep -oP 'geos-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.bz2)' | head -n1) ; cd /tmp/; wget "https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2" ; tar -xjf "geos-${GEOS_VERSION}.tar.bz2"  ; cd "geos-${GEOS_VERSION}" ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ;  cmake --install . ; ldconfig ; geos-config --version
 
 ENV GDAL_LIBRARY_PATH=/usr/local/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/bin/ogr2ogr
 
 # install libreoffice
-RUN curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
     && tar -xvf libreoffice.tar.gz \
     && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
     && for file in *.deb; do \
@@ -127,7 +127,7 @@ RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
 RUN /opt/libreoffice/program/python -m pip install unoserver
-
+RUN rm -rf /tmp/*
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh ; chmod 755 /tmp/default_script_installer.sh; /tmp/default_script_installer.sh ; rm -rf /tmp/*
 
