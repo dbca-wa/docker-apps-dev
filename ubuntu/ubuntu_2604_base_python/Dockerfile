@@ -88,7 +88,7 @@ RUN cd /tmp; export GIFLIB_VERSION=$(wget -qO- https://sourceforge.net/projects/
 # RUN cd /tmp && SPATIALITE_FILE=$(wget -qO- https://www.gaia-gis.it/fossil/libspatialite/index | grep -oE 'libspatialite-[0-9]+\.[0-9]+\.[0-9]+\.tar\.gz' | sort -V | tail -n1) && wget "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/${SPATIALITE_FILE}" && tar xzf "${SPATIALITE_FILE}" && cd "${SPATIALITE_FILE%.tar.gz}" && ./configure --prefix=/usr/local && make -j$(nproc) && make install && ldconfig
 
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
-RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.1\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
+RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.0\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
 
 RUN wget -qO /tmp/Python-3.14.8.tgz https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tgz
 RUN cd /tmp/ ; tar xzf Python-3.14.8.tgz ; cd /tmp/Python-3.14.8; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.14.8; make -j$(nproc); cd /tmp/Python-3.14.8; make altinstall 
