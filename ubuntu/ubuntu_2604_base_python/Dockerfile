@@ -97,10 +97,16 @@ RUN cd /tmp && SPATIALITE_FILE=$(wget -qO- https://www.gaia-gis.it/fossil/libspa
 # coreutils is only a pointer and grype flagging even though the main package has been patched.  Temporary solution to match the package version to the main version
 RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.0\.0~ubuntu25$/Version: 9.7-3ubuntu2.1/' /var/lib/dpkg/status
 
-RUN wget -qO /tmp/Python-3.14.8.tgz https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tgz
-RUN cd /tmp/ ; tar xzf Python-3.14.8.tgz ; cd /tmp/Python-3.14.8; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.14.8; make -j$(nproc); cd /tmp/Python-3.14.8; make altinstall 
-RUN ln -s /usr/local/bin/python3.14 /usr/bin/python ; ln -s /usr/local/bin/python3.14 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.14 /usr/bin/pip
-RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
+# RUN wget -qO /tmp/Python-3.14.8.tgz https://www.python.org/ftp/python/3.14.8/Python-3.14.8.tgz
+# RUN cd /tmp/ ; tar xzf Python-3.14.8.tgz ; cd /tmp/Python-3.14.8; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.14.8; make -j$(nproc); cd /tmp/Python-3.14.8; make altinstall 
+# RUN ln -s /usr/local/bin/python3.14 /usr/bin/python ; ln -s /usr/local/bin/python3.14 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.14 /usr/bin/pip
+# RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
+
+RUN wget -qO /tmp/Python-3.15.0.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0.tgz
+RUN cd /tmp/ ; tar xzf Python-3.15.0.tgz ; cd /tmp/Python-3.15.0; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0; make -j$(nproc); cd /tmp/Python-3.14.8; make altinstall 
+RUN ln -s /usr/local/bin/python3.15 /usr/bin/python ; ln -s /usr/local/bin/python3.15 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.15 /usr/bin/pip
+RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.15.conf
+
 RUN ldconfig ; python -V; pip -V
 
 RUN export VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/releases" | jq -r '.[0].tag_name') ; wget -O /tmp/graphviz.tar.gz "https://gitlab.com/graphviz/graphviz/-/archive/${VERSION}/graphviz-${VERSION#*}/tar.gz"
