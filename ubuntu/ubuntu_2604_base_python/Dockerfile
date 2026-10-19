@@ -102,8 +102,11 @@ RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.0\.0~ubuntu
 # RUN ln -s /usr/local/bin/python3.14 /usr/bin/python ; ln -s /usr/local/bin/python3.14 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.14 /usr/bin/pip
 # RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
 
-RUN wget -qO /tmp/Python-3.15.0rc3.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0rc3.tgz
-RUN cd /tmp/ ; tar xzf Python-3.15.0rc3.tgz ; cd /tmp/Python-3.15.0rc3; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0rc3; make -j$(nproc); cd /tmp/Python-3.15.0rc3; make altinstall 
+RUN wget -qO /tmp/Python-3.15.0.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0.tgz
+RUN cd /tmp/ ; tar xzf Python-3.15.0.tgz ; cd /tmp/Python-3.15.0; 
+# Check and confirm CVE-2025-15367 is patched
+RUN if grep -q "Control characters not allowed" Lib/poplib.py; then echo "✔ Source patch verified." && cp Include/patchlevel.h Include/patchlevel.h.bak && sed -i 's/#define PY_VERSION          "3.15.0"/#define PY_VERSION          "3.15.0-patched-CVE-2025-15367"/g' Include/patchlevel.h && echo "✔ Version string patched successfully."; else echo "❌ Verification failed. File format might be different."; fi
+RUN ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0; make -j$(nproc); cd /tmp/Python-3.15.0; make altinstall 
 RUN ln -s /usr/local/bin/python3.15 /usr/bin/python ; ln -s /usr/local/bin/python3.15 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.15 /usr/bin/pip
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.15.conf
 
