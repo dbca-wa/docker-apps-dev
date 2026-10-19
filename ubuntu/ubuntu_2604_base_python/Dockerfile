@@ -102,8 +102,8 @@ RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.0\.0~ubuntu
 # RUN ln -s /usr/local/bin/python3.14 /usr/bin/python ; ln -s /usr/local/bin/python3.14 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.14 /usr/bin/pip
 # RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
 
-RUN wget -qO /tmp/Python-3.15.0.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0.tgz
-RUN cd /tmp/ ; tar xzf Python-3.15.0.tgz ; cd /tmp/Python-3.15.0; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0; make -j$(nproc); cd /tmp/Python-3.14.8; make altinstall 
+RUN wget -qO /tmp/Python-3.15.0rc3.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0rc3.tgz
+RUN cd /tmp/ ; tar xzf Python-3.15.0rc3.tgz ; cd /tmp/Python-3.15.0rc3; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0rc3; make -j$(nproc); cd /tmp/Python-3.15.0rc3; make altinstall 
 RUN ln -s /usr/local/bin/python3.15 /usr/bin/python ; ln -s /usr/local/bin/python3.15 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.15 /usr/bin/pip
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.15.conf
 
