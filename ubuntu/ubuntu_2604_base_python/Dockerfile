@@ -117,6 +117,7 @@ RUN export VERSION=$(curl -fsSL "https://gitlab.com/api/v4/projects/4207231/rele
 RUN mkdir /tmp/graphviz/; cd /tmp/ ; tar xzf graphviz.tar.gz -C /tmp/graphviz ; cd "$(find /tmp/graphviz -mindepth 1 -maxdepth 1 -type d | head -n1)" ; ./autogen.sh  ; ./configure --prefix=/usr/local ; make -j$(nproc) ;  make install
 RUN dot -V
 RUN pip install graphviz
+RUN pip install uv
 
 RUN cd /tmp/ && export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig ; gdal-config --version ; gdalinfo --version
 RUN cd /tmp/ && export GEOS_VERSION=$(wget -qO- https://libgeos.org/usage/download/ | grep -oP 'geos-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.bz2)' | head -n1) ; cd /tmp/; wget "https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2" ; tar -xjf "geos-${GEOS_VERSION}.tar.bz2"  ; cd "geos-${GEOS_VERSION}" ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ;  cmake --install . ; ldconfig ; geos-config --version
