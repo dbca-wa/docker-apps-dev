@@ -137,7 +137,11 @@ RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/s
     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
 RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
-RUN ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so ; ln -sf /usr/local/lib/libpython3.14.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+
+RUN rm -f /opt/libreoffice/program/libpython3.13.so /opt/libreoffice/program/libpython3.13.so.1.0 \
+    && PY_LIB=$(find /usr/local/lib -maxdepth 1 -name "libpython3.*.so.1.0" | head -n 1) \
+    && ln -sf "$PY_LIB" /opt/libreoffice/program/libpython3.13.so \
+    && ln -sf "$PY_LIB" /opt/libreoffice/program/libpython3.13.so.1.0
 
 RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 
