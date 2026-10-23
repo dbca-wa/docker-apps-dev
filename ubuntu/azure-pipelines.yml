@@ -30,7 +30,18 @@ stages:
     displayName: Build
     pool:
       vmImage: ubuntu-latest
+    timeoutInMinutes: 360
     steps:  
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Node 26
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node26/Dockerfile'
+        tags: | 
+              ubuntu_2604_base_python_node26
+              ubuntu_2604_base_python_node26_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev  
     - task: Docker@2
       displayName: Build Ubuntu 26.04 Base Image (for local use).
       inputs:
@@ -66,7 +77,17 @@ stages:
               ubuntu_2604_base_python_node
               ubuntu_2604_base_python_node_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev            
+        repository: ghcr.io/dbca-wa/docker-apps-dev  
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Latex
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_latex/Dockerfile'
+        tags: | 
+              ubuntu_2604_base_python_latex
+              ubuntu_2604_base_python_latex_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev                
     - script: |
         docker system prune -af
       displayName: 'Cleanup Docker space'             

@@ -30,10 +30,31 @@ ENV CATALINA_OPTS="\$EXTRA_JAVA_OPTS \
     -Dorg.geotools.coverage.jaiext.enabled=true"
 
 # init
+# RUN apt update \
+#     && apt -y upgrade \
+#     && apt install -y --no-install-recommends locales openssl unzip gdal-bin wget curl openjdk-11-jdk gettext vim ssh nginx
 RUN apt update \
     && apt -y upgrade \
-    && apt install -y --no-install-recommends locales openssl unzip gdal-bin wget curl openjdk-11-jdk gettext vim ssh nginx 
+    && apt install -y --no-install-recommends locales openssl unzip gdal-bin wget curl gnupg2 ca-certificates lsb-release ubuntu-keyring openjdk-11-jdk gettext vim ssh
 RUN apt install -y python3 python3-pip python3-setuptools python3-dev python3-requests
+
+# RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \
+#     | tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null
+# RUN gpg --dry-run --quiet --no-keyring --import --import-options import-show /usr/share/keyrings/nginx-archive-keyring.gpg \
+#     | grep -q "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
+# RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" \
+#     | tee /etc/apt/sources.list.d/nginx.list >/dev/null
+RUN curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-archive-keyring.gpg
+RUN gpg --show-keys --with-fingerprint --with-colons /usr/share/keyrings/nginx-archive-keyring.gpg | grep -q "fpr:::::::::573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62:"
+RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/ubuntu $(lsb_release -cs) nginx" > /etc/apt/sources.list.d/nginx.list
+# RUN echo "deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/mainline/ubuntu $(lsb_release -cs) nginx" \
+#     | tee /etc/apt/sources.list.d/nginx.list >/dev/null
+# RUN printf "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" \
+#     | tee /etc/apt/preferences.d/99nginx >/dev/null
+# RUN apt update \
+#     && apt install -y --no-install-recommends nginx
+RUN printf "Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n" > /etc/apt/preferences.d/99nginx
+RUN apt-get update && apt-get install --no-install-recommends -y nginx
 
 RUN apt clean && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/*
 RUN ln -s /usr/bin/python3 /usr/bin/python
@@ -74,7 +95,7 @@ RUN apt purge -y  \
 USER oim
 FROM tomcat as download
 
-ARG GS_VERSION=2.27.4
+ARG GS_VERSION=2.27.6
 ARG GS_BUILD=release
 ARG WAR_ZIP_URL=https://downloads.sourceforge.net/project/geoserver/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-war.zip
 ENV GEOSERVER_VERSION=$GS_VERSION
@@ -90,7 +111,7 @@ RUN echo "Downloading GeoServer ${GS_VERSION} ${GS_BUILD}" \
 
 FROM tomcat as install
 
-ARG GS_VERSION=2.27.3
+ARG GS_VERSION=2.27.6
 ARG GS_BUILD=release
 ARG STABLE_PLUGIN_URL=https://downloads.sourceforge.net/project/geoserver/GeoServer/${GS_VERSION}/extensions
 ARG COMMUNITY_PLUGIN_URL=''

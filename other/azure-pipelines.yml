@@ -32,6 +32,19 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - task: Docker@2
+      displayName: Build Security Scan 26.04 Base Image (for local use).
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/other/security_scan/Dockerfile'
+        tags: | 
+              security_scan_tools_base_latest
+              security_scan_tools_base_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev   
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'      
+    - task: Docker@2
       displayName: Build BusyBox Base Image (for local use).
       inputs:
         command: buildAndPush
