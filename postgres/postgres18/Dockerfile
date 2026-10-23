@@ -1,5 +1,5 @@
 # Prepare the base environment.
-FROM postgres:17 as builder_base_docker
+FROM postgres:18 as builder_base_docker
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
 ENV PRODUCTION_EMAIL=True
@@ -8,7 +8,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install --no-install-recommends -y vim net-tools telnet procps wget ca-certificates
-RUN apt-get install --no-install-recommends -y postgresql-17-postgis-3 postgresql-17-postgis-3-scripts
+RUN apt-get install --no-install-recommends -y postgresql-18-postgis-3 postgresql-18-postgis-3-scripts
 
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
