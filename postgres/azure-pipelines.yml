@@ -35,10 +35,10 @@ stages:
       displayName: Build Postgres Image for Postgres 18
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/postgres/postgres18ubuntu/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/postgres/postgres18/Dockerfile'
         tags: | 
-              postgres18ubuntu_latest
-              postgres18ubuntu_$(tagDate)              
+              postgres18_latest
+              postgres18_$(tagDate)              
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev           
     - task: Docker@2
