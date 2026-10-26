@@ -168,7 +168,7 @@ RUN cd /tmp; \
     export PYTHON="/usr/local/bin/python3.15"; \
     export PYTHON_CFLAGS="$(python3.15-config --includes)"; \
     export PYTHON_LIBS="$(python3.15-config --ldflags --embed)"; \	
-	export container=docker \
+	export container=docker ; \
     ./autogen.sh \
       --prefix=/opt/libreoffice \
       --with-vendor="DBCA" \
