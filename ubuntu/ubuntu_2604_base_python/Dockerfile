@@ -159,7 +159,8 @@ RUN cd /tmp; \
 RUN which python3 && \
     python3 --version && \
     find /usr/local /usr -name 'python3*-config' -type f 2>/dev/null
-RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3-config --configdir ; python3-config --ldflags --embed
+# RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3-config --configdir ; python3-config --ldflags --embed
+RUN export PATH=/usr/local/bin:$PATH ; which python ; python --version ; python-config --configdir ; python-config --ldflags --embed
 
 
 # install libreoffice verison 1
