@@ -49,7 +49,13 @@ RUN apt-get install --no-install-recommends -y \
     libxi-dev \
 	libice-dev \ 
 	libsm-dev \
-	libx11-xcb-dev
+	libx11-xcb-dev \
+    libxcb1-dev \
+    libxcb-render0-dev \
+    libxcb-shm0-dev \
+    libxrender-dev \
+    libxext-dev \
+    libx11-dev	
 	
 
   
