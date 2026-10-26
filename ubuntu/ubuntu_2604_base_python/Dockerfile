@@ -126,26 +126,60 @@ ENV GDAL_LIBRARY_PATH=/usr/local/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/bin/ogr2ogr
 
-# install libreoffice
-RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
-    && tar -xvf libreoffice.tar.gz \
-    && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
-    && for file in *.deb; do \
-         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
-       done \
-    && mv opt/libreoffice* /opt/libreoffice \
-    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
-    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
-RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
 
-RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so \
-    && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+ARG LIBREOFFICE_VERSION=26.8.0
+ARG LIBREOFFICE_VERSION_MINOR=3
 
-RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+RUN set -eux; \
+    cd /tmp; \
+    curl -fsSL \
+      "https://download.documentfoundation.org/libreoffice/src/${LIBREOFFICE_VERSION}/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}.tar.xz" \
+      -o libreoffice.tar.xz; \
+    tar -xJf libreoffice.tar.xz; \
+    cd "libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}"; \
+    export PATH="/usr/local/bin:${PATH}"; \
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig"; \
+    export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib64"; \
+    ./autogen.sh \
+      --prefix=/opt/libreoffice \
+      --with-vendor="DBCA" \
+      --without-help \
+      --without-myspell-dicts \
+      --disable-online-update \
+      --disable-odk \
+      --disable-postgresql-sdbc \
+      --disable-firebird-sdbc \
+      --disable-report-builder \
+      --disable-scripting-beanshell \
+      --disable-scripting-javascript; \
+    make -j"$(nproc)"; \
+    make install; \
+    ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice; \
+    rm -rf /tmp/libreoffice*
+
+RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3-config --configdir ; python3-config --ldflags --embed
+
+
+# install libreoffice verison 1
+# RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+#     && tar -xvf libreoffice.tar.gz \
+#     && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
+#     && for file in *.deb; do \
+#          ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
+#        done \
+#     && mv opt/libreoffice* /opt/libreoffice \
+#     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
+#     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
+# RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
+
+#RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+
+# RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
-RUN /opt/libreoffice/program/python -m pip install unoserver
+#RUN /opt/libreoffice/program/python -m pip install unoserver
+RUN python -m pip install unoserver
 RUN rm -rf /tmp/*
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh ; chmod 755 /tmp/default_script_installer.sh; /tmp/default_script_installer.sh ; rm -rf /tmp/*
