@@ -127,11 +127,10 @@ ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/bin/ogr2ogr
 
 
-ARG LIBREOFFICE_VERSION=26.8.0
-ARG LIBREOFFICE_VERSION_MINOR=3
+ENV LIBREOFFICE_VERSION=26.8.0
+ENV LIBREOFFICE_VERSION_MINOR=3
 
-RUN set -eux; \
-    cd /tmp; \
+RUN cd /tmp; \
     curl -fsSL \
       "https://download.documentfoundation.org/libreoffice/src/${LIBREOFFICE_VERSION}/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}.tar.xz" \
       -o libreoffice.tar.xz; \
