@@ -191,14 +191,16 @@ RUN cd /tmp; \
 
 # RUN cp Makefile Makefile.before-root-bypass ; sed -i '/Building LibreOffice as root/,+4 s/exit 1/exit 0/' Makefile
 	  
-RUN export container=docker ; make -j"$(nproc)";    make install;  ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice;  rm -rf /tmp/libreoffice*
+RUN export container=docker ; make -j"$(nproc)";    make install;  
+RUN rm -rf /opt/libreoffice ; mkdir -p /opt/libreoffice
+RUN cd "/tmp/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}";  cp -a instdir/. /opt/libreoffice/
+RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice
+RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/soffice
 
 RUN which python3 
 RUN python3 --version 
 RUN find /usr/local /usr -name 'python3*-config' -type f 2>/dev/null
 RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3.15-config --configdir ; python3.15-config --ldflags --embed
-
-
 
 # install libreoffice verison 1
 # RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
