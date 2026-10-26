@@ -48,7 +48,8 @@ RUN apt-get install --no-install-recommends -y \
     libxfixes-dev \
     libxi-dev \
 	libice-dev \ 
-	libsm-dev 	
+	libsm-dev \
+	libx11-xcb-dev
 	
 
   
