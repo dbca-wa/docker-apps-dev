@@ -11,7 +11,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client build-essential run-one libpq-dev patch bzip2 unzip jq pkg-config ca-certificates gpg autoconf automake libtool pkg-config flex bison cmake libffi-dev
+RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client build-essential run-one libpq-dev patch bzip2 unzip jq pkg-config ca-certificates gpg autoconf automake libtool pkg-config flex bison cmake libffi-dev zip
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
     libxrender1 \
@@ -35,7 +35,21 @@ RUN apt-get install --no-install-recommends -y \
     libjbig-dev \ 
 	libc6-dev \
 	g++ \ 
-	libbz2-dev
+	libbz2-dev \ 
+	libfontconfig1-dev \
+	gperf \
+	libnss3-dev \
+    libnspr4-dev \
+    libx11-dev \
+    libxext-dev \
+    libxrender-dev \
+    libxinerama-dev \
+    libxrandr-dev \
+    libxfixes-dev \
+    libxi-dev \
+	libice-dev \ 
+	libsm-dev 	
+	
 
   
 # libdeflate
@@ -127,6 +141,11 @@ ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/bin/ogr2ogr
 
 
+RUN /usr/local/bin/python3.15-config --includes ; /usr/local/bin/python3.15-config --ldflags --embed
+RUN cd /tmp; git clone --depth 1 --branch release https://github.com/ninja-build/ninja.git; cd ninja; /usr/local/bin/python3.15 configure.py --bootstrap; install -m 0755 ninja /usr/local/bin/ninja;   /usr/local/bin/ninja --version;  cd /;  rm -rf /tmp/ninja
+RUN MESON_VERSION="$(curl -fsSL https://api.github.com/repos/mesonbuild/meson/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')"; echo "Building Meson ${MESON_VERSION}"; cd /tmp; curl -fsSL         "https://github.com/mesonbuild/meson/releases/download/${MESON_VERSION}/meson-${MESON_VERSION}.tar.gz" -o meson.tar.gz; mkdir /opt/meson; tar -xzf meson.tar.gz --strip-components=1 -C /opt/meson; ln -s /opt/meson/meson.py /usr/local/bin/meson; chmod +x /opt/meson/meson.py; /usr/local/bin/meson --version; rm -f /tmp/meson.tar.gz
+RUN python -m pip install unoserver
+
 ENV LIBREOFFICE_VERSION=26.8.0
 ENV LIBREOFFICE_VERSION_MINOR=3
 
@@ -139,6 +158,10 @@ RUN cd /tmp; \
     export PATH="/usr/local/bin:${PATH}"; \
     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig"; \
     export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib64"; \
+    export PYTHON="/usr/local/bin/python3.15"; \
+    export PYTHON_CFLAGS="$(python3.15-config --includes)"; \
+    export PYTHON_LIBS="$(python3.15-config --ldflags --embed)"; \	
+	export container=docker \
     ./autogen.sh \
       --prefix=/opt/libreoffice \
       --with-vendor="DBCA" \
@@ -150,11 +173,18 @@ RUN cd /tmp; \
       --disable-firebird-sdbc \
       --disable-report-builder \
       --disable-scripting-beanshell \
-      --disable-scripting-javascript; \
-    make -j"$(nproc)"; \
-    make install; \
-    ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice; \
-    rm -rf /tmp/libreoffice*
+	  --disable-cups \
+	  --without-java \
+	  --without-x \
+	  --disable-gtk3 \
+ 	   --disable-dbus \	 
+	    --disable-gstreamer-1-0 \
+		--disable-opengl \
+      --disable-scripting-javascript;
+
+# RUN cp Makefile Makefile.before-root-bypass ; sed -i '/Building LibreOffice as root/,+4 s/exit 1/exit 0/' Makefile
+	  
+RUN export container=docker ; make -j"$(nproc)";    make install;  ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice;  rm -rf /tmp/libreoffice*
 
 RUN which python3 
 RUN python3 --version 
