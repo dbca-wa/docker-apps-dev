@@ -33,16 +33,6 @@ stages:
     timeoutInMinutes: 360
     steps:  
     - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Node 26
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node26/Dockerfile'
-        tags: | 
-              ubuntu_2604_base_python_node26
-              ubuntu_2604_base_python_node26_$(tagDate)              
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev  
-    - task: Docker@2
       displayName: Build Ubuntu 26.04 Base Image (for local use).
       inputs:
         command: buildAndPush
@@ -64,12 +54,25 @@ stages:
               ubuntu_2604_base_python
               ubuntu_2604_base_python_$(tagDate)              
         containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev   
+        repository: ghcr.io/dbca-wa/docker-apps-dev  
     - script: |
         docker system prune -af
       displayName: 'Cleanup Docker space'  
     - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Node
+      displayName: Ubuntu 26.04 Base Python + Node 26
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node26/Dockerfile'
+        tags: | 
+              ubuntu_2604_base_python_node26
+              ubuntu_2604_base_python_node26_$(tagDate)              
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev          
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'  
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Node 24
       inputs:
         command: buildAndPush
         dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node/Dockerfile'
