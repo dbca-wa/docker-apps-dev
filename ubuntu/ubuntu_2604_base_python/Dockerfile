@@ -182,7 +182,6 @@ RUN cd /tmp; \
       --disable-scripting-beanshell \
 	  --disable-cups \
 	  --without-java \
-	  --without-x \
 	  --disable-gtk3 \
  	   --disable-dbus \	 
 	    --disable-gstreamer-1-0 \
