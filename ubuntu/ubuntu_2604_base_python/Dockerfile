@@ -187,8 +187,8 @@ RUN cd /tmp; \
  	   --disable-dbus \	 
 	    --disable-gstreamer-1-0 \
 		--disable-opengl \
-      --disable-scripting-javascript;	  
-	  make -j"$(nproc)";    
+      --disable-scripting-javascript; \	  
+	  make -j"$(nproc)";    \
 	  make install;  
 RUN rm -rf /opt/libreoffice ; mkdir -p /opt/libreoffice
 RUN cd "/tmp/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}";  cp -a instdir/. /opt/libreoffice/
