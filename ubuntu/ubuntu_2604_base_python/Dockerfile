@@ -186,8 +186,14 @@ RUN cd /tmp; \
  	   --disable-dbus \	 
 	    --disable-gstreamer-1-0 \
 		--disable-opengl \
-      --disable-scripting-javascript; \	  
+      --disable-scripting-javascript; \	
 	  make -j"$(nproc)";    \
+	cp -p \
+        workdir/Package/Gallery/Files/backgrounds.filelist \
+        workdir/Package/Gallery/backgrounds.filelist && \
+    cp -p \
+        workdir/Package/Gallery/Files/sounds.filelist \
+        workdir/Package/Gallery/sounds.filelist && \  
 	  make install;  
 RUN rm -rf /opt/libreoffice ; mkdir -p /opt/libreoffice
 RUN cd "/tmp/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}";  cp -a instdir/. /opt/libreoffice/
