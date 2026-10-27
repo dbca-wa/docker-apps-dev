@@ -208,7 +208,7 @@ RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; pytho
 
 
 # install libreoffice verison 1
-RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.1_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.1/deb/x86_64/LibreOffice_26.8.1_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
     && tar -xvf libreoffice.tar.gz \
     && cd LibreOffice_26.8.1*_Linux_x86-64_deb/DEBS/ \
     && for file in *.deb; do \
