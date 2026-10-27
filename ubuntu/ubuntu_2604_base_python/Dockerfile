@@ -187,11 +187,9 @@ RUN cd /tmp; \
  	   --disable-dbus \	 
 	    --disable-gstreamer-1-0 \
 		--disable-opengl \
-      --disable-scripting-javascript;
-
-# RUN cp Makefile Makefile.before-root-bypass ; sed -i '/Building LibreOffice as root/,+4 s/exit 1/exit 0/' Makefile
-	  
-RUN export container=docker ; make -j"$(nproc)";    make install;  
+      --disable-scripting-javascript;	  
+	  make -j"$(nproc)";    
+	  make install;  
 RUN rm -rf /opt/libreoffice ; mkdir -p /opt/libreoffice
 RUN cd "/tmp/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}";  cp -a instdir/. /opt/libreoffice/
 RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice
