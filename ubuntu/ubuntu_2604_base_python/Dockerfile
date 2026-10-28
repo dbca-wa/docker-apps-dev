@@ -11,7 +11,7 @@ RUN apt-get clean
 RUN apt-get update
 RUN apt-get upgrade -y
 
-RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client build-essential run-one libpq-dev patch bzip2 unzip jq pkg-config ca-certificates gpg autoconf automake libtool pkg-config flex bison cmake libffi-dev
+RUN apt-get install --no-install-recommends -y curl wget git libmagic-dev gcc binutils libproj-dev tzdata postgresql-client build-essential run-one libpq-dev patch bzip2 unzip jq pkg-config ca-certificates gpg autoconf automake libtool pkg-config flex bison cmake libffi-dev zip
 RUN apt-get install --no-install-recommends -y \
     libxinerama1 \
     libxrender1 \
@@ -35,9 +35,29 @@ RUN apt-get install --no-install-recommends -y \
     libjbig-dev \ 
 	libc6-dev \
 	g++ \ 
-	libbz2-dev \
-    libreadline-dev \
-    libncursesw5-dev
+	libbz2-dev \ 
+	libfontconfig1-dev \
+	gperf \
+	libnss3-dev \
+    libnspr4-dev \
+    libx11-dev \
+    libxext-dev \
+    libxrender-dev \
+    libxinerama-dev \
+    libxrandr-dev \
+    libxfixes-dev \
+    libxi-dev \
+	libice-dev \ 
+	libsm-dev \
+	libx11-xcb-dev \
+    libxcb1-dev \
+    libxcb-render0-dev \
+    libxcb-shm0-dev \
+    libxrender-dev \
+    libxext-dev \
+    libx11-dev	
+	
+
   
 # libdeflate
 RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ; wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${DEFLATE_VERSION}.tar.gz -O /tmp/libdeflate.tar.gz ; cd /tmp/ ; tar -xzf libdeflate.tar.gz ; cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install . ; ldconfig ; ldconfig -p | grep libdeflate
@@ -103,11 +123,11 @@ RUN sed -i '/^Package: coreutils$/,/^$/ s/^Version: 9\.5-1ubuntu2+0\.0\.0~ubuntu
 # RUN ln -s /usr/local/bin/python3.14 /usr/bin/python ; ln -s /usr/local/bin/python3.14 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.14 /usr/bin/pip
 # RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.14.conf
 
-RUN wget -qO /tmp/Python-3.15.0.tgz https://www.python.org/ftp/python/3.15.0/Python-3.15.0.tgz
-RUN cd /tmp/ ; tar xzf Python-3.15.0.tgz ; cd /tmp/Python-3.15.0; 
+RUN wget -qO /tmp/Python-3.15.2.tgz https://www.python.org/ftp/python/3.15.2/Python-3.15.2.tgz
+RUN cd /tmp/ ; tar xzf Python-3.15.2.tgz ; cd /tmp/Python-3.15.2; 
 # Check and confirm CVE-2025-15367 is patched
-RUN cd /tmp/Python-3.15.0; if grep -q "Control characters not allowed" Lib/poplib.py; then echo "✔ Source patch verified." && cp Include/patchlevel.h Include/patchlevel.h.bak && sed -i 's/#define PY_VERSION          "3.15.0"/#define PY_VERSION          "3.15.0-patched-CVE-2025-15367"/g' Include/patchlevel.h && echo "✔ Version string patched successfully."; else echo "❌ Verification failed. File format might be different."; fi
-RUN cd /tmp/Python-3.15.0; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.0; make -j$(nproc); cd /tmp/Python-3.15.0; make altinstall 
+#RUN cd /tmp/Python-3.15.2; if grep -q "Control characters not allowed" Lib/poplib.py; then echo "✔ Source patch verified." && cp Include/patchlevel.h Include/patchlevel.h.bak && sed -i 's/#define PY_VERSION          "3.15.0"/#define PY_VERSION          "3.15.0-patched-CVE-2025-15367"/g' Include/patchlevel.h && echo "✔ Version string patched successfully."; else echo "❌ Verification failed. File format might be different."; fi
+RUN cd /tmp/Python-3.15.2; ./configure --enable-optimizations --enable-shared; cd /tmp/Python-3.15.2; make -j$(nproc); cd /tmp/Python-3.15.2; make altinstall 
 RUN ln -s /usr/local/bin/python3.15 /usr/bin/python ; ln -s /usr/local/bin/python3.15 /usr/bin/python3 ; ln -s /usr/local/bin/pip3.15 /usr/bin/pip
 RUN echo "/usr/local/lib" > /etc/ld.so.conf.d/python3.15.conf
 
@@ -127,28 +147,91 @@ ENV GDAL_LIBRARY_PATH=/usr/local/lib/libgdal.so
 ENV GEOS_LIBRARY_PATH=/usr/local/lib/libgeos_c.so
 ENV OGR2OGR=/usr/local/bin/ogr2ogr
 
-# install libreoffice
-RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.0/deb/x86_64/LibreOffice_26.8.0_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
-    && tar -xvf libreoffice.tar.gz \
-    && cd LibreOffice_26.8.0*_Linux_x86-64_deb/DEBS/ \
-    && for file in *.deb; do \
-         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
-       done \
-    && mv opt/libreoffice* /opt/libreoffice \
-    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
-    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.0*
-RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
 
-RUN rm -f /opt/libreoffice/program/libpython3.13.so /opt/libreoffice/program/libpython3.13.so.1.0 \
-    && PY_LIB=$(find /usr/local/lib -maxdepth 1 -name "libpython3.*.so.1.0" | head -n 1) \
-    && ln -sf "$PY_LIB" /opt/libreoffice/program/libpython3.13.so \
-    && ln -sf "$PY_LIB" /opt/libreoffice/program/libpython3.13.so.1.0
+RUN /usr/local/bin/python3.15-config --includes ; /usr/local/bin/python3.15-config --ldflags --embed
+# libreoffice full compile
+# RUN cd /tmp; git clone --depth 1 --branch release https://github.com/ninja-build/ninja.git; cd ninja; /usr/local/bin/python3.15 configure.py --bootstrap; install -m 0755 ninja /usr/local/bin/ninja;   /usr/local/bin/ninja --version;  cd /;  rm -rf /tmp/ninja
+# RUN MESON_VERSION="$(curl -fsSL https://api.github.com/repos/mesonbuild/meson/releases/latest | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')"; echo "Building Meson ${MESON_VERSION}"; cd /tmp; curl -fsSL         "https://github.com/mesonbuild/meson/releases/download/${MESON_VERSION}/meson-${MESON_VERSION}.tar.gz" -o meson.tar.gz; mkdir /opt/meson; tar -xzf meson.tar.gz --strip-components=1 -C /opt/meson; ln -s /opt/meson/meson.py /usr/local/bin/meson; chmod +x /opt/meson/meson.py; /usr/local/bin/meson --version; rm -f /tmp/meson.tar.gz
+# RUN python -m pip install unoserver
 
-RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+# ENV LIBREOFFICE_VERSION=26.8.0
+# ENV LIBREOFFICE_VERSION_MINOR=3
+
+# RUN cd /tmp; \
+#     curl -fsSL \
+#       "https://download.documentfoundation.org/libreoffice/src/${LIBREOFFICE_VERSION}/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}.tar.xz" \
+#       -o libreoffice.tar.xz; \
+#     tar -xJf libreoffice.tar.xz; \
+#     cd "libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}"; \
+#     export PATH="/usr/local/bin:${PATH}"; \
+#     export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig"; \
+#     export LD_LIBRARY_PATH="/usr/local/lib:/usr/local/lib64"; \
+#     export PYTHON="/usr/local/bin/python3.15"; \
+#     export PYTHON_CFLAGS="$(python3.15-config --includes)"; \
+#     export PYTHON_LIBS="$(python3.15-config --ldflags --embed)"; \	
+# 	export container=docker ; \
+#     ./autogen.sh \
+#       --prefix=/opt/libreoffice \
+#       --with-vendor="DBCA" \
+#       --without-help \
+#       --without-myspell-dicts \
+#       --disable-online-update \
+#       --disable-odk \
+#       --disable-postgresql-sdbc \
+#       --disable-firebird-sdbc \
+#       --disable-report-builder \
+#       --disable-scripting-beanshell \
+# 	  --disable-cups \
+# 	  --without-java \
+# 	  --disable-gtk3 \
+#  	   --disable-dbus \	 
+# 	    --disable-gstreamer-1-0 \
+# 		--disable-opengl \
+#       --disable-scripting-javascript; \	
+# 	  make -j"$(nproc)";    \
+# 	cp -p \
+#         workdir/Package/Gallery/Files/backgrounds.filelist \
+#         workdir/Package/Gallery/backgrounds.filelist && \
+#     cp -p \
+#         workdir/Package/Gallery/Files/sounds.filelist \
+#         workdir/Package/Gallery/sounds.filelist && \  
+# 	  make install;  
+# RUN rm -rf /opt/libreoffice ; mkdir -p /opt/libreoffice
+# RUN cd "/tmp/libreoffice-${LIBREOFFICE_VERSION}.${LIBREOFFICE_VERSION_MINOR}";  cp -a instdir/. /opt/libreoffice/
+# RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice
+# RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/soffice
+
+# RUN which python3 
+# RUN python3 --version 
+# RUN find /usr/local /usr -name 'python3*-config' -type f 2>/dev/null
+RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3.15-config --configdir ; python3.15-config --ldflags --embed
+
+
+# # install libreoffice verison 1
+# RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.1/deb/x86_64/LibreOffice_26.8.1_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+#     && tar -xvf libreoffice.tar.gz \
+#     && cd LibreOffice_26.8.1*_Linux_x86-64_deb/DEBS/ \
+#     && for file in *.deb; do \
+#          ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
+#        done \
+#     && mv opt/libreoffice* /opt/libreoffice \
+#     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
+#     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.1*
+
+RUN wget https://github.com/dbca-wa/package_build_store_core/releases/download/libreoffice-python3.15/libreoffice-python3.15.tar.gz -O  /tmp/libreoffice-python3.15.tar.gz
+RUN cd /tmp/libreoffice/ ; tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ 
+#RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
+#RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+# RUN rm -f /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; 
+RUN ln -s /usr/bin/python /opt/libreoffice/program/python ; 
+# RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+# test to make sure it works
+RUN echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
 
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
-RUN /opt/libreoffice/program/python -m pip install unoserver
+#RUN /opt/libreoffice/program/python -m pip install unoserver
+RUN python -m pip install unoserver
 RUN rm -rf /tmp/*
 # Default Scripts
 RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh ; chmod 755 /tmp/default_script_installer.sh; /tmp/default_script_installer.sh ; rm -rf /tmp/*

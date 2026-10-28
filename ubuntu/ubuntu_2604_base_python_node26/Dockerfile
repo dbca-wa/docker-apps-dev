@@ -11,8 +11,8 @@ RUN apt-get upgrade -y
 
 # Install nodejs
 RUN update-ca-certificates
-RUN cd /tmp/ ; wget https://nodejs.org/dist/v26.12.0/node-v26.12.0-linux-x64.tar.xz
-RUN cd /tmp/ ; tar -xf node-v26.12.0-linux-x64.tar.xz --directory /usr/local --strip-components 1
+RUN cd /tmp/ ; wget https://nodejs.org/dist/v26.12.1/node-v26.12.1-linux-x64.tar.xz
+RUN cd /tmp/ ; tar -xf node-v26.12.1-linux-x64.tar.xz --directory /usr/local --strip-components 1
 RUN node -v
 RUN npm -v
 RUN npm install -g npm@latest
