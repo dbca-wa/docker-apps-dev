@@ -219,10 +219,12 @@ RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; pytho
 #     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.1*
 
 RUN wget https://github.com/dbca-wa/package_build_store_core/releases/download/libreoffice-python3.15/libreoffice-python3.15.tar.gz -O  /tmp/libreoffice-python3.15.tar.gz
-RUN tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/	
+RUN cd /tmp/ ; tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/	
 #RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
 #RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
-RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+# RUN rm -f /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; 
+RUN ln -s /usr/bin/python /opt/libreoffice/program/python ; 
+# RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 # test to make sure it works
 RUN echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
 
