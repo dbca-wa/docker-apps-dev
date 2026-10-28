@@ -228,7 +228,7 @@ RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice
 RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/soffice
 # RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 # test to make sure it works
-RUN echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
+RUN cd /tmp/; echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
 
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
