@@ -54,8 +54,7 @@ RUN apt-get install --no-install-recommends -y \
     libxcb-render0-dev \
     libxcb-shm0-dev \
     libxrender-dev \
-    libxext-dev \
-    libx11-dev	
+    libxext-dev	
 	
 
   
