@@ -35,8 +35,9 @@ RUN apt-get install --no-install-recommends -y \
     libjbig-dev \ 
 	libc6-dev \
 	g++ \ 
-	libbz2-dev
-
+	libbz2-dev \
+    libreadline-dev \
+    libncursesw5-dev
   
 # libdeflate
 RUN export DEFLATE_VERSION=$(wget -qO- https://api.github.com/repos/ebiggers/libdeflate/releases/latest | grep '"tag_name"' | cut -d'"' -f4) ; wget https://github.com/ebiggers/libdeflate/archive/refs/tags/${DEFLATE_VERSION}.tar.gz -O /tmp/libdeflate.tar.gz ; cd /tmp/ ; tar -xzf libdeflate.tar.gz ; cd /tmp/ ; cd libdeflate-* ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . --parallel $(nproc) ; cmake --install . ; ldconfig ; ldconfig -p | grep libdeflate
