@@ -224,6 +224,8 @@ RUN cd /tmp/ ; tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/
 #RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
 # RUN rm -f /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; 
 RUN ln -s /usr/bin/python /opt/libreoffice/program/python ; 
+RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/libreoffice
+RUN ln -sf /opt/libreoffice/program/soffice /usr/local/bin/soffice
 # RUN echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
 # test to make sure it works
 RUN echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
