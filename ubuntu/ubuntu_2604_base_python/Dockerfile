@@ -207,21 +207,24 @@ RUN /usr/local/bin/python3.15-config --includes ; /usr/local/bin/python3.15-conf
 RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; python3.15-config --configdir ; python3.15-config --ldflags --embed
 
 
-# install libreoffice verison 1
-RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.1/deb/x86_64/LibreOffice_26.8.1_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
-    && tar -xvf libreoffice.tar.gz \
-    && cd LibreOffice_26.8.1*_Linux_x86-64_deb/DEBS/ \
-    && for file in *.deb; do \
-         ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
-       done \
-    && mv opt/libreoffice* /opt/libreoffice \
-    && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
-    && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.1*
-	
-RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
-RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
+# # install libreoffice verison 1
+# RUN cd /tmp/ && curl -fsSL https://download.documentfoundation.org/libreoffice/stable/26.8.1/deb/x86_64/LibreOffice_26.8.1_Linux_x86-64_deb.tar.gz -o libreoffice.tar.gz \
+#     && tar -xvf libreoffice.tar.gz \
+#     && cd LibreOffice_26.8.1*_Linux_x86-64_deb/DEBS/ \
+#     && for file in *.deb; do \
+#          ar x "$file" data.tar.xz && tar -xJf data.tar.xz && rm data.tar.xz; \
+#        done \
+#     && mv opt/libreoffice* /opt/libreoffice \
+#     && ln -s /opt/libreoffice/program/soffice /usr/local/bin/libreoffice \
+#     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.1*
 
+RUN wget https://github.com/dbca-wa/package_build_store_core/releases/download/libreoffice-python3.15/libreoffice-python3.15.tar.gz -O  /tmp/libreoffice-python3.15.tar.gz
+RUN tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/	
+#RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
+#RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
 RUN rm /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; echo "/opt/libreoffice/program" > $(python -c "import site; print(site.getsitepackages()[0])")/libreoffice.pth
+# test to make sure it works
+RUN echo "test" > /tmp/test.txt; libreoffice --convert-to pdf /tmp/test.txt	
 
 ENV URE_BOOTSTRAP="vnd.sun.star.pathname:/opt/libreoffice/program/fundamentalrc" 
 
