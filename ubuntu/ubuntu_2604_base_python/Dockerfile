@@ -54,7 +54,9 @@ RUN apt-get install --no-install-recommends -y \
     libxcb-render0-dev \
     libxcb-shm0-dev \
     libxrender-dev \
-    libxext-dev	
+    libxext-dev \
+    libreadline-dev \
+    libncursesw5-dev	
 	
 
   
