@@ -56,7 +56,7 @@ RUN apt-get install --no-install-recommends -y \
     libxrender-dev \
     libxext-dev \
     libreadline-dev \
-    libncursesw5-dev	
+    libncurses-dev	
 	
 
   
