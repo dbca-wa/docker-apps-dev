@@ -219,7 +219,7 @@ RUN export PATH=/usr/local/bin:$PATH ; which python3 ; python3 --version ; pytho
 #     && cd /tmp && rm -rf libreoffice.tar.gz LibreOffice_26.8.1*
 
 RUN wget https://github.com/dbca-wa/package_build_store_core/releases/download/libreoffice-python3.15/libreoffice-python3.15.tar.gz -O  /tmp/libreoffice-python3.15.tar.gz
-RUN cd /tmp/ ; tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/	
+RUN cd /tmp/libreoffice/ ; tar -xzf libreoffice-python3.15.tar.gz ; rm -rf /opt/libreoffice/ ; mkdir /opt/libreoffice/ ; mv instdir/* /opt/libreoffice/ 
 #RUN rm /opt/libreoffice/program/libpython3.13.so ; rm /opt/libreoffice/program/libpython3.13.so.1.0
 #RUN ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so  && ln -sf /usr/local/lib/libpython3.15.so.1.0 /opt/libreoffice/program/libpython3.13.so.1.0
 # RUN rm -f /opt/libreoffice/program/python ; ln -s /usr/bin/python /opt/libreoffice/program/python ; 
