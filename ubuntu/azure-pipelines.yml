@@ -1,6 +1,7 @@
 # Docker
 # Build a Docker image
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+name: Ubuntu Base Build - $(Date:yyyy.MM.dd)$(Rev:.r)-$(Build.BuildId)
 
 trigger:
 - main
