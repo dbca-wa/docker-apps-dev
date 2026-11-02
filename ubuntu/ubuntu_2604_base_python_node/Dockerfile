@@ -22,7 +22,7 @@ RUN apt-get upgrade -y
 RUN update-ca-certificates
 # RUN mamba install -y -c conda-forge nodejs=24 &&  mamba clean -afy
 RUN cd /tmp/ ; wget https://nodejs.org/dist/v24.22.2/node-v24.22.2-linux-x64.tar.xz
-RUN cd /tmp/ ; tar -xf node-v24.22.1-linux-x64.tar.xz --directory /usr/local --strip-components 1
+RUN cd /tmp/ ; tar -xf node-v24.22.2-linux-x64.tar.xz --directory /usr/local --strip-components 1
 RUN node -v
 RUN npm -v
 RUN npm install -g npm@latest
