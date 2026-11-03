@@ -58,7 +58,8 @@ RUN apt-get install --no-install-recommends -y \
     libx11-dev	\
 	libnetcdf-dev \
     libxinerama1 \
-    libxrender1
+    libxrender1 \
+	libaec0 
 
   
 # libdeflate
