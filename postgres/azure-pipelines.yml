@@ -3,7 +3,20 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- main
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - postgres/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - postgres/**
 
 schedules:
 - cron: "01 12 * * 1-5"
