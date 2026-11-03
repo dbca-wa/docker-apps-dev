@@ -55,8 +55,10 @@ RUN apt-get install --no-install-recommends -y \
     libxcb-shm0-dev \
     libxrender-dev \
     libxext-dev \
-    libx11-dev	
-	
+    libx11-dev	\
+	libnetcdf-dev \
+    libxinerama1 \
+    libxrender1
 
   
 # libdeflate
@@ -140,7 +142,7 @@ RUN dot -V
 RUN pip install graphviz
 RUN pip install uv
 
-RUN cd /tmp/ && export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig ; gdal-config --version ; gdalinfo --version
+RUN cd /tmp/ && export GDAL_VERSION=$(wget -qO- https://gdal.org/en/stable/download.html | grep -oP 'gdal-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.gz)' | sort -u | head -n1) ;  wget "https://download.osgeo.org/gdal/${GDAL_VERSION}/gdal-${GDAL_VERSION}.tar.gz" ; tar -xzf gdal-${GDAL_VERSION}.tar.gz ; cd gdal-${GDAL_VERSION} ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local  -DGDAL_USE_NETCDF=ON -DGDAL_ENABLE_DRIVER_NETCDF=ON ; cmake --build . -j$(nproc) ; cmake --install . ; ldconfig ; gdal-config --version ; gdalinfo --version
 RUN cd /tmp/ && export GEOS_VERSION=$(wget -qO- https://libgeos.org/usage/download/ | grep -oP 'geos-\K[0-9]+\.[0-9]+\.[0-9]+(?=\.tar\.bz2)' | head -n1) ; cd /tmp/; wget "https://download.osgeo.org/geos/geos-${GEOS_VERSION}.tar.bz2" ; tar -xjf "geos-${GEOS_VERSION}.tar.bz2"  ; cd "geos-${GEOS_VERSION}" ; mkdir build ; cd build ; cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local ; cmake --build . -j$(nproc) ;  cmake --install . ; ldconfig ; geos-config --version
 
 ENV GDAL_LIBRARY_PATH=/usr/local/lib/libgdal.so
