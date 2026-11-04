@@ -20,7 +20,6 @@ RUN apt-get upgrade -y
 
 # Install nodejs
 RUN update-ca-certificates
-# RUN mamba install -y -c conda-forge nodejs=24 &&  mamba clean -afy
 RUN cd /tmp/ ; wget https://nodejs.org/dist/v24.22.2/node-v24.22.2-linux-x64.tar.xz
 RUN cd /tmp/ ; tar -xf node-v24.22.2-linux-x64.tar.xz --directory /usr/local --strip-components 1
 RUN node -v
@@ -35,18 +34,3 @@ RUN cd /tmp ;  npm pack http-cache-semantics@latest ;  tar -xzf http-cache-seman
 RUN cd /tmp ;  npm pack glob@latest ;  tar -xzf glob-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/glob ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/glob
 RUN cd /tmp ;  npm pack minimatch@latest ;  tar -xzf minimatch-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/minimatch ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/minimatch
 
-# RUN ln -s "$(which node)" "$(dirname "$(which node)")/nodejs"
-
-
-
-# RUN mkdir -p /etc/apt/keyrings && \
-#     curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
-#     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" \
-#     | tee /etc/apt/sources.list.d/nodesource.list && \
-#     apt-get update && \
-#     apt-get install -y nodejs
-
-# Default Scripts
-# RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/default_script_installer.sh -O /tmp/default_script_installer.sh
-# RUN chmod 755 /tmp/default_script_installer.sh
-# RUN /tmp/default_script_installer.sh
