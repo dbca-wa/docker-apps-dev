@@ -61,7 +61,7 @@ stages:
 
         docker buildx inspect --bootstrap
 
-        docker buildx build           --platform linux/amd64,linux/arm64           --file "$(Build.SourcesDirectory)/ubuntu/ubuntu2604_base/Dockerfile"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_$(tagDate)"           --push           "$(Build.SourcesDirectory)"
+        docker buildx build           --platform linux/amd64,linux/arm64           --file "$(Build.SourcesDirectory)/ubuntu_core/ubuntu2604_base/Dockerfile"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_$(tagDate)"           --push           "$(Build.SourcesDirectory)"
       displayName: Build Ubuntu 26.04 Base Image (AMD64 + ARM64)
 
     - script: |
