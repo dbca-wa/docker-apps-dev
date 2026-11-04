@@ -32,6 +32,9 @@ RUN cd /tmp; npm pack undici@6.29.1 ;tar -xzf undici-6.29.1.tgz ; rm -rf /usr/lo
 RUN cd /tmp ;  npm pack ip-address@latest ;  tar -xzf ip-address-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/ip-address ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/ip-address
 RUN cd /tmp ;  npm pack postcss-selector-parser@latest ;  tar -xzf postcss-selector-parser-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser
 RUN cd /tmp ;  npm pack http-cache-semantics@latest ;  tar -xzf http-cache-semantics-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/http-cache-semantics ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/http-cache-semantics
+RUN cd /tmp ;  npm pack glob@latest ;  tar -xzf glob-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/glob ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/glob
+RUN cd /tmp ;  npm pack minimatch@latest ;  tar -xzf minimatch-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/minimatch ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/minimatch
+
 # RUN ln -s "$(which node)" "$(dirname "$(which node)")/nodejs"
 
 
