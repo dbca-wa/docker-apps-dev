@@ -19,7 +19,7 @@ pr:
       - ubuntu/**
 
 schedules:
-- cron: "01 12 * * 1-5"
+- cron: "01 12 * * 0-5"
   displayName: Development Environment Rebuilds
   branches:
     include:
@@ -72,57 +72,12 @@ stages:
       displayName: Ubuntu 26.04 Base Python
       inputs:
         command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python/Dockerfile'
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core/ubuntu_2604_base_python/Dockerfile'
         tags: |
           ubuntu_2604_base_python
           ubuntu_2604_base_python_$(tagDate)
         containerRegistry: DockerGitHub
         repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - script: |
-        docker system prune -af
-      displayName: 'Cleanup Docker space'
-
-    - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Node 26
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node26/Dockerfile'
-        tags: |
-          ubuntu_2604_base_python_node26
-          ubuntu_2604_base_python_node26_$(tagDate)
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - script: |
-        docker system prune -af
-      displayName: 'Cleanup Docker space'
-
-    - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Node 24
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_node/Dockerfile'
-        tags: |
-          ubuntu_2604_base_python_node
-          ubuntu_2604_base_python_node_$(tagDate)
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - task: Docker@2
-      displayName: Ubuntu 26.04 Base Python + Latex
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2604_base_python_latex/Dockerfile'
-        tags: |
-          ubuntu_2604_base_python_latex
-          ubuntu_2604_base_python_latex_$(tagDate)
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - script: |
-        docker system prune -af
-      displayName: 'Cleanup Docker space'
 
     - task: Docker@2
       displayName: Build Ubuntu 25.10 Base Image (for local use).
@@ -155,21 +110,6 @@ stages:
       displayName: 'Cleanup Docker space'
 
     - task: Docker@2
-      displayName: Ubuntu 25.10 Base Python + Node
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2510_base_python_node/Dockerfile'
-        tags: |
-          ubuntu_2510_base_python_node
-          ubuntu_2510_base_python_node_$(tagDate)
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - script: |
-        docker system prune -af
-      displayName: 'Cleanup Docker space'
-
-    - task: Docker@2
       displayName: Ubuntu 24.04 Base Python
       inputs:
         command: buildAndPush
@@ -184,20 +124,6 @@ stages:
         docker system prune -af
       displayName: 'Cleanup Docker space'
 
-    - task: Docker@2
-      displayName: Ubuntu 24.04 Base Python + Node
-      inputs:
-        command: buildAndPush
-        dockerfile: '$(Build.SourcesDirectory)/ubuntu/ubuntu_2404_base_python_node/Dockerfile'
-        tags: |
-          ubuntu_2404_base_python_node
-          ubuntu_2404_base_python_node_$(tagDate)
-        containerRegistry: DockerGitHub
-        repository: ghcr.io/dbca-wa/docker-apps-dev
-
-    - script: |
-        docker system prune -af
-      displayName: 'Cleanup Docker space'
 
     - task: Docker@2
       displayName: Build Ubuntu 24.04 Base Image (for local use).

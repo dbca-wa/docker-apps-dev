@@ -1,0 +1,144 @@
+# Docker
+# Build Docker images
+name: Ubuntu Base Build - $(Date:yyyy.MM.dd)$(Rev:.r)-$(Build.BuildId)
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - ubuntu_core_linked/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - ubuntu_core_linked/**
+
+schedules:
+- cron: "01 15 * * 0-5"
+  displayName: Development Environment Rebuilds
+  branches:
+    include:
+    - main
+  always: true
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  tagDate: $[ format('{0:yyyy}.{0:MM}.{0:dd}.{0:HH}.{0:mm}{0:ss}', pipeline.startTime) ]
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+
+stages:
+- stage: Build
+  condition: and(succeeded(), eq(variables.isMain, 'true'))
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    timeoutInMinutes: 360
+    steps:
+
+    # Log in first so buildx can push the multi-architecture image to GHCR.
+    - task: Docker@2
+      displayName: Login to GitHub Container Registry
+      inputs:
+        command: login
+        containerRegistry: DockerGitHub
+
+    # ubuntu2604_base_latest now supports both AMD64 and ARM64.
+    - script: |
+        set -euo pipefail
+
+        docker buildx create           --name dbca-multiarch-builder           --driver docker-container           --use 2>/dev/null || docker buildx use dbca-multiarch-builder
+
+        docker buildx inspect --bootstrap
+
+        docker buildx build           --platform linux/amd64,linux/arm64           --file "$(Build.SourcesDirectory)/ubuntu/ubuntu2604_base/Dockerfile"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_$(tagDate)"           --push           "$(Build.SourcesDirectory)"
+      displayName: Build Ubuntu 26.04 Base Image (AMD64 + ARM64)
+
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'
+
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Node 26
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core_linked/ubuntu_2604_base_python_node26/Dockerfile'
+        tags: |
+          ubuntu_2604_base_python_node26
+          ubuntu_2604_base_python_node26_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'
+
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Node 24
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core_linked/ubuntu_2604_base_python_node/Dockerfile'
+        tags: |
+          ubuntu_2604_base_python_node
+          ubuntu_2604_base_python_node_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+
+    - task: Docker@2
+      displayName: Ubuntu 26.04 Base Python + Latex
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core_linked/ubuntu_2604_base_python_latex/Dockerfile'
+        tags: |
+          ubuntu_2604_base_python_latex
+          ubuntu_2604_base_python_latex_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'
+
+    - task: Docker@2
+      displayName: Ubuntu 25.10 Base Python + Node
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core_linked/ubuntu_2510_base_python_node/Dockerfile'
+        tags: |
+          ubuntu_2510_base_python_node
+          ubuntu_2510_base_python_node_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'
+
+    - task: Docker@2
+      displayName: Ubuntu 24.04 Base Python + Node
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Build.SourcesDirectory)/ubuntu_core_linked/ubuntu_2404_base_python_node/Dockerfile'
+        tags: |
+          ubuntu_2404_base_python_node
+          ubuntu_2404_base_python_node_$(tagDate)
+        containerRegistry: DockerGitHub
+        repository: ghcr.io/dbca-wa/docker-apps-dev
+
+    - script: |
+        docker system prune -af
+      displayName: 'Cleanup Docker space'
+
+
+
+    
