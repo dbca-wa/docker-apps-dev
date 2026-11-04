@@ -54,15 +54,15 @@ stages:
         containerRegistry: DockerGitHub
 
     # ubuntu2604_base_latest now supports both AMD64 and ARM64.
-    - script: |
-        set -euo pipefail
+    # - script: |
+    #     set -euo pipefail
 
-        docker buildx create           --name dbca-multiarch-builder           --driver docker-container           --use 2>/dev/null || docker buildx use dbca-multiarch-builder
+    #     docker buildx create           --name dbca-multiarch-builder           --driver docker-container           --use 2>/dev/null || docker buildx use dbca-multiarch-builder
 
-        docker buildx inspect --bootstrap
+    #     docker buildx inspect --bootstrap
 
-        docker buildx build           --platform linux/amd64,linux/arm64           --file "$(Build.SourcesDirectory)/ubuntu/ubuntu2604_base/Dockerfile"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_$(tagDate)"           --push           "$(Build.SourcesDirectory)"
-      displayName: Build Ubuntu 26.04 Base Image (AMD64 + ARM64)
+    #     docker buildx build           --platform linux/amd64,linux/arm64           --file "$(Build.SourcesDirectory)/ubuntu/ubuntu2604_base/Dockerfile"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_latest"           --tag "ghcr.io/dbca-wa/docker-apps-dev:ubuntu2604_base_$(tagDate)"           --push           "$(Build.SourcesDirectory)"
+    #   displayName: Build Ubuntu 26.04 Base Image (AMD64 + ARM64)
 
     - script: |
         docker system prune -af
