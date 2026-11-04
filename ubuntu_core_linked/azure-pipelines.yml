@@ -1,6 +1,6 @@
 # Docker
 # Build Docker images
-name: Ubuntu Base Build - $(Date:yyyy.MM.dd)$(Rev:.r)-$(Build.BuildId)
+name: Ubuntu Base Linked Build - $(Date:yyyy.MM.dd)$(Rev:.r)-$(Build.BuildId)
 
 trigger:
   branches:
