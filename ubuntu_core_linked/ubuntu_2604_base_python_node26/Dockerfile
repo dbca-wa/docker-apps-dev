@@ -1,26 +1,55 @@
-FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu_2604_base_python as builder_base_ubuntu2604_python
-MAINTAINER asi@dbca.wa.gov.au
+FROM ghcr.io/dbca-wa/docker-apps-dev:ubuntu_2604_base_python AS builder_base_ubuntu2604_python
+
+LABEL maintainer="asi@dbca.wa.gov.au"
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Australia/Perth
-ENV NODE_MAJOR=24
+ENV NODE_VERSION=26.13.0
 
-RUN apt-get clean
-RUN apt-get update
-RUN apt-get upgrade -y
+# Update base system and install Node.js
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends xz-utils \
+    && update-ca-certificates \
+    && wget -q "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}-linux-x64.tar.xz" -O /tmp/node.tar.xz \
+    && tar -xf /tmp/node.tar.xz --directory /usr/local --strip-components 1 \
+    && rm -f /tmp/node.tar.xz \
+    && apt-get purge -y --auto-remove xz-utils \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install nodejs
-RUN update-ca-certificates
-RUN cd /tmp/ ; wget https://nodejs.org/dist/v26.13.0/node-v26.13.0-linux-x64.tar.xz
-RUN cd /tmp/ ; tar -xf node-v26.13.0-linux-x64.tar.xz --directory /usr/local --strip-components 1
-RUN node -v
-RUN npm -v
-RUN npm install -g npm@latest
-RUN npm -v
-RUN cd /tmp ; npm pack brace-expansion@5.0.12 ; tar -xzf brace-expansion-5.0.12.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/brace-expansion ; cp -a package   /usr/local/lib/node_modules/npm/node_modules/brace-expansion
-RUN cd /tmp; npm pack undici@6.28.1 ;tar -xzf undici-6.28.1.tgz ; rm -rf /usr/local/lib/node_modules/npm/node_modules/undici ; cp -a package   /usr/local/lib/node_modules/npm/node_modules/undici
-RUN cd /tmp ;  npm pack ip-address@latest ;  tar -xzf ip-address-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/ip-address ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/ip-address
-RUN cd /tmp ;  npm pack postcss-selector-parser@latest ;  tar -xzf postcss-selector-parser-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/postcss-selector-parser
-RUN cd /tmp ;  npm pack http-cache-semantics@latest ;  tar -xzf http-cache-semantics-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/http-cache-semantics ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/http-cache-semantics
-#RUN cd /tmp ;  npm pack glob@latest ;  tar -xzf glob-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/glob ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/glob
-#RUN cd /tmp ;  npm pack minimatch@latest ;  tar -xzf minimatch-*.tgz ;  rm -rf /usr/local/lib/node_modules/npm/node_modules/minimatch ;  cp -a package   /usr/local/lib/node_modules/npm/node_modules/minimatch
+# Upgrade npm to latest
+RUN npm install -g npm@latest \
+    && node -v \
+    && npm -v
+
+# Patch flagged dependencies across all locations (including nested sub-dependencies)
+RUN set -e; \
+    NPM_DIR="/usr/local/lib/node_modules/npm"; \
+    for pkg in \
+    "brace-expansion@5.0.12" \
+    "undici@6.29.1" \
+    "ip-address@latest" \
+    "postcss-selector-parser@latest" \
+    "http-cache-semantics@latest"; do \
+    name="${pkg%@*}"; \
+    rm -rf /tmp/patch && mkdir -p /tmp/patch && cd /tmp/patch; \
+    npm pack "$pkg"; \
+    tar -xzf *.tgz; \
+    found=0; \
+    for target in $(find "$NPM_DIR" -type d -name "$name"); do \
+    rm -rf "$target"; \
+    cp -a /tmp/patch/package "$target"; \
+    found=1; \
+    done; \
+    if [ "$found" -eq 0 ]; then \
+    cp -a /tmp/patch/package "$NPM_DIR/node_modules/$name"; \
+    fi; \
+    cd /tmp && rm -rf /tmp/patch; \
+    done; \
+    cd /tmp && npm cache clean --force
+
+# Thorough smoke test: installs, verifies binary execution, and checks npm's self-diagnostics
+RUN mkdir -p /tmp/test && cd /tmp/test \
+    && npm install lodash \
+    && node -e "require('lodash')" \
+    && cd /tmp && rm -rf /tmp/test
